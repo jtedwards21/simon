@@ -1,7 +1,7 @@
 import React from "react";
 
-var onChange = function(gameState, userState) {
-　　ReactDOM.render(<Simon gameState={gameState} userState={userState}/>, document.getElementById("content"));
+var onChange = function(gameState, userState, canClick) {
+　　ReactDOM.render(<Simon canClick={canClick} gameState={gameState} userState={userState}/>, document.getElementById("content"));
 }
 
 export default class Simon extends React.Component {
@@ -11,7 +11,7 @@ export default class Simon extends React.Component {
     this.buttons = ["button-one", "button-two", "button-three", "button-four"];
 
     this.state = {
-      canClick: false,
+      canClick: true,
       userState: []
     };
   }
@@ -55,7 +55,7 @@ export default class Simon extends React.Component {
     //onChange
     var gs = this.props.gameState;
     gs.push(newState);
-    onChange(gs, this.props.userState);
+    onChange(gs, this.props.userState); 
   }
   randomInt() {
     var min = Math.ceil(0);

@@ -7,10 +7,11 @@ import React from "react";
 
 var gameState = [];
 var userState = [];
+var canClick = false;
 
 /* GET home page. */
 router.get("/", function(req, res) {
-  const markup = renderToString(<Simon gameState={gameState} userState={userState} />);
+  const markup = renderToString(<Simon canClick={canClick} gameState={gameState} userState={userState} />);
 
   res.render("index", {
     title: "Express",
