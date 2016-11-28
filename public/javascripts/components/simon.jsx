@@ -23,12 +23,30 @@ export default class Simon extends React.Component {
     var curr = l - 1;
     var same = s[curr] == gameS[curr];
     if(same == false){
-	//Blink red and dump
+	//Blink Red and Dump
+　　　　　　　　var originalColor = e.target.style.backgroundColor;
+	e.target.style.backgroundColor = "red";
+        //Delay for a moment
+	e.target.style.backgroundColor = originalColor;
+	onChange([], [], false);
     }
     else{
       if(l == this.props.gameState.length){
 	//Blink green and get more gameState pieces
+　　　　　　　　var originalColor = e.target.style.backgroundColor;
+	e.target.style.backgroundColor = "green";
+        //Delay for a moment
+	e.target.style.backgroundColor = originalColor;
+        var ri = this.randomInt();
+	var newState = this.buttons[ri];
+	var gs = this.props.gameState;
+	gs.push(newState);
         //Show new gamestate before rerender
+	for(var i = 0; i < this.gs.length;i++){
+	  this.lightButton(gs[i]);
+        }
+	//rerender
+	onChange(gs, this.props.userState, true);
       }
       else{
 	//continue current state
@@ -38,9 +56,12 @@ export default class Simon extends React.Component {
     //if not the same allow to continue to click
     //if the same blink green and finish
   }
-  lightButtons() {
-    
-    //Light up the buttons in the Simon Game
+  lightButton(id) {
+        var target = document.getElementById("#" + id);
+　　　　　　　　var originalColor = target.style.backgroundColor;
+	target.style.backgroundColor = "white";
+        //Delay for a moment
+	target.style.backgroundColor = originalColor;
   }
   startGame(){
     //Get a new GameState
