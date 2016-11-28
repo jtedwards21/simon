@@ -16,6 +16,14 @@ export default class Simon extends React.Component {
       canClick: true,
       userState: []
     };
+
+    this.hasCursor = {
+	cursor: "pointer"
+    };
+   
+    this.noCursor = {
+	cursor: "unset"
+    };
   }
   addColorClick(e) {
     console.log('color');
@@ -97,24 +105,24 @@ export default class Simon extends React.Component {
       <div className="box">
 	<div className="buttons">
           <div className="top-row">
-	    <div id="button-one" onClick={this.addColorClick.bind(this)} className="button left-col">
+	    <div id="button-one" style={(this.props.canClick) ? this.hasCursor : this.noCursor} onClick={this.addColorClick.bind(this)} className="button left-col">
             </div>
-            <div id="button-two" onClick={this.addColorClick.bind(this)} className="button right-col">
+            <div id="button-two" style={(this.props.canClick) ? this.hasCursor : this.noCursor} onClick={this.addColorClick.bind(this)} className="button right-col">
             </div>
 	  </div>
           <div className="bottom-row">
-            <div id="button-three" onClick={this.addColorClick.bind(this)} className="button left-col">
+            <div id="button-three" style={(this.props.canClick) ? this.hasCursor : this.noCursor} onClick={this.addColorClick.bind(this)} className="button left-col">
             </div>
-            <div id="button-four" onClick={this.addColorClick.bind(this)} className="button right-col">
+            <div id="button-four" style={(this.props.canClick) ? this.hasCursor : this.noCursor} onClick={this.addColorClick.bind(this)} className="button right-col">
             </div>
 	  </div>
 	</div>
 	<div className="controls-container">
 	  <div className="controls">
 	    <div className="display-container">
-	      <span className="display"></span>
+	      <span className="display">{this.props.gameState.length}</span>
 	    </div>
-            <button　onClick={this.startGame.bind(this)}>Start</button>
+            <button style={(this.props.canClick) ? this.noCursor : this.hasCursor}　onClick={this.startGame.bind(this)}>Start</button>
 	  </div>
 	</div>
       </div>

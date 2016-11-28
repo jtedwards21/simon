@@ -21565,6 +21565,14 @@
 	      canClick: true,
 	      userState: []
 	    };
+
+	    _this.hasCursor = {
+	      cursor: "pointer"
+	    };
+
+	    _this.noCursor = {
+	      cursor: "unset"
+	    };
 	    return _this;
 	  }
 
@@ -21661,7 +21669,7 @@
 	          _react2.default.createElement(
 	            "div",
 	            { className: "top-row" },
-	            _react2.default.createElement("div", { id: "button-one", onClick: this.addColorClick.bind(this), className: "button left-col" }),
+	            _react2.default.createElement("div", { id: "button-one", style: this.props.canClick ? this.hasCursor : this.noCursor, onClick: this.addColorClick.bind(this), className: "button left-col" }),
 	            _react2.default.createElement("div", { id: "button-two", onClick: this.addColorClick.bind(this), className: "button right-col" })
 	          ),
 	          _react2.default.createElement(
@@ -21680,7 +21688,11 @@
 	            _react2.default.createElement(
 	              "div",
 	              { className: "display-container" },
-	              _react2.default.createElement("span", { className: "display" })
+	              _react2.default.createElement(
+	                "span",
+	                { className: "display" },
+	                this.props.gameState.length
+	              )
 	            ),
 	            _react2.default.createElement(
 	              "button",
