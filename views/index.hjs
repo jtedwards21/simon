@@ -8,5 +8,6 @@
     <div id="content">{{{markup}}}</div>
 
     <script src="javascripts/bundle.js"></script>
+　　　　<script src="javascripts/init.js"></script>
   </body>
 </html>
