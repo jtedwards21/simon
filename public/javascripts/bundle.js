@@ -21581,6 +21581,7 @@
 	    value: function addColorClick(e) {
 	      console.log('color');
 	      var targetId = e.target.id;
+	      var change = (0, _jquery2.default)("#" + targetId);
 	      var s = this.props.userState;
 	      s.push(e.target.id);
 	      var l = s.length;
@@ -21589,31 +21590,37 @@
 	      var same = s[curr] == gameS[curr];
 	      if (same == false) {
 	        //Blink Red and Dump
-	        var originalColor = (0, _jquery2.default)("#" + targetId).css("background-color");
-	        (0, _jquery2.default)("#" + targetId).animate({
-	          backgroundColor: "red"
-	        }, 5000);
-	        (0, _jquery2.default)("#" + targetId).animate({
-	          backgroundColor: originalColor
-	        }, 5000);
+	        change.css("background-color", "red");
+	        change.animate({
+	          opacity: 0
+	        }, 100);
+	        change.animate({
+	          opacity: 1
+	        }, 100);
 	        onChange([], [], false);
 	      } else {
 	        if (l == this.props.gameState.length) {
-	          var originalColor = (0, _jquery2.default)("#" + targetId).css("background-color");
-	          (0, _jquery2.default)("#" + targetId).animate({
-	            backgroundColor: "green"
-	          }, 5000);
-	          (0, _jquery2.default)("#" + targetId).animate({
-	            backgroundColor: originalColor
-	          }, 5000);
+	          var originalColor = change.css("background-color");
+	          change.css("background-color", "green");
+	          change.animate({
+	            opacity: 0
+	          }, 100);
+	          change.animate({
+	            opacity: 1
+	          }, 100);
+
+	          change.css("background-color", originalColor);
 	          var ri = this.randomInt();
 	          var newState = this.buttons[ri];
 	          var gs = this.props.gameState;
 	          gs.push(newState);
+	          this.lightButtons(0, gs, this.lightButtons);
 	          //Show new gamestate before rerender
-	          for (var i = 0; i < gs.length; i++) {
+	          //This is a big issue, 
+	          /*
+	          for(var i = 0; i < gs.length;i++){
 	            this.lightButton(gs[i]);
-	          }
+	                 }*/
 	          //rerender
 	          onChange(gs, this.props.userState, true);
 	        } else {
@@ -21621,16 +21628,19 @@
 	        }
 	      }
 	    }
+	    //render all the gamestates
+
 	  }, {
-	    key: "lightButton",
-	    value: function lightButton(id) {
-	      var originalColor = (0, _jquery2.default)("#" + id).css("background-color");
-	      (0, _jquery2.default)("#" + targetId).animate({
-	        backgroundColor: "white"
-	      }, 5000);
-	      (0, _jquery2.default)("#" + targetId).animate({
-	        backgroundColor: originalColor
-	      }, 5000);
+	    key: "lightButtons",
+	    value: function lightButtons(i, gs, lb) {
+	      if (i < gs.length) {
+	        var originalColor = (0, _jquery2.default)("#" + gs[i]).css("background-color");
+	        (0, _jquery2.default)("#" + gs[i]).animate({
+	          opacity: 0
+	        }, 1000, (0, _jquery2.default)("#" + gs[i]).animate({
+	          opacity: 1
+	        }, 1000, lb(i + 1, gs, lb)));
+	      }
 	    }
 	  }, {
 	    key: "startGame",
@@ -21646,10 +21656,10 @@
 	      var originalColor = (0, _jquery2.default)(m).css("background-color");
 	      (0, _jquery2.default)(m).animate({
 	        opacity: 0
-	      }, 5000, function () {
+	      }, 1000, function () {
 	        (0, _jquery2.default)(m).animate({
 	          opacity: 1
-	        }, 5000, function () {
+	        }, 1000, function () {
 	          gs.push(newState);
 	          onChange(gs, us, true);
 	        });

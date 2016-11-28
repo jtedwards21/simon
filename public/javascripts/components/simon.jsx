@@ -28,6 +28,7 @@ export default class Simon extends React.Component {
   addColorClick(e) {
     console.log('color');
 　　　　var targetId = e.target.id;
+    var change = JQuery("#" + targetId);
     var s = this.props.userState;
     s.push(e.target.id)
     var l = s.length;
@@ -36,33 +37,40 @@ export default class Simon extends React.Component {
     var same = s[curr] == gameS[curr];
     if(same == false){
 	//Blink Red and Dump
-	var originalColor = JQuery("#" + targetId).css("background-color");
-	JQuery("#" + targetId).animate({
-	backgroundColor: "red"
-}, 5000);
-	JQuery("#" + targetId).animate({
-	backgroundColor: originalColor
-}, 5000);
+	change.css("background-color", "red");
+	change.animate({
+	opacity: 0
+}, 100);
+	change.animate({
+	opacity: 1
+}, 100);
 	onChange([], [], false);
     }
     else{
       if(l == this.props.gameState.length){
-	var originalColor = JQuery("#" + targetId).css("background-color");
-	JQuery("#" + targetId).animate({
-	backgroundColor: "green"
-}, 5000);
-	JQuery("#" + targetId).animate({
-	backgroundColor: originalColor
-}, 5000);
+	var originalColor = change.css("background-color");
+	change.css("background-color", "green");
+	change.animate({
+	opacity: 0
+}, 100);
+	change.animate({
+	opacity: 1
+}, 100);
+	
+	change.css("background-color", originalColor);
         var ri = this.randomInt();
 	var newState = this.buttons[ri];
 	var gs = this.props.gameState;
 	gs.push(newState);
+	this.lightButtons(gs, this.lightButtons);
         //Show new gamestate before rerender
+	//This is a big issue, 
+	/*
 	for(var i = 0; i < gs.length;i++){
 	  this.lightButton(gs[i]);
-        }
+        }*/
 	//rerender
+	//Then onChange would go into the lb method
 	onChange(gs, this.props.userState, true);
       }
       else{
@@ -70,14 +78,15 @@ export default class Simon extends React.Component {
       }
     }
   }
-  lightButton(id) {
-	var originalColor = JQuery("#" + id).css("background-color");
-	JQuery("#" + targetId).animate({
-	backgroundColor: "white"
-}, 5000);
-	JQuery("#" + targetId).animate({
-	backgroundColor: originalColor
-}, 5000);
+  //Maybe play with state instead?
+  //render all the gamestates
+  lightButtons(gs, lb) {
+	i = 0;
+	JQuery("#" + gs[i]).animate({
+	opacity: 0
+}, 1000, JQuery("#" + gs[i]).animate({
+	opacity: 1
+}, 1000, function(gs, lb)lb(i+1, gs, lb)));}
   }
   startGame(){
     //Get a new GameState
@@ -91,10 +100,10 @@ console.log(m);
     var originalColor = JQuery(m).css("background-color");
     JQuery(m).animate({
 	opacity: 0
-}, 5000, function(){
+}, 1000, function(){
 JQuery(m).animate({
 	opacity: 1
-}, 5000, function(){
+}, 1000, function(){
     gs.push(newState);
     onChange(gs, us, true); 
 });
