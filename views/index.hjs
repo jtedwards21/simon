@@ -5,6 +5,7 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
+　　　　<div class="bground"></div>
     <div id="content">{{{markup}}}</div>
 
     <script src="javascripts/bundle.js"></script>

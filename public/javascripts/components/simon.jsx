@@ -1,4 +1,6 @@
 import React from "react";
+import ReactDOM from "react-dom";
+import JQuery from 'jquery';
 
 var onChange = function(gameState, userState, canClick) {
 　　ReactDOM.render(<Simon canClick={canClick} gameState={gameState} userState={userState}/>, document.getElementById("content"));
@@ -16,6 +18,7 @@ export default class Simon extends React.Component {
     };
   }
   addColorClick(e) {
+    console.log('color');
     var s = this.props.userState;
     s.push(e.target.id)
     var l = s.length;
@@ -68,15 +71,16 @@ export default class Simon extends React.Component {
     var b = this.randomInt();
     var newState = this.buttons[b];
     //Show the gameState
-    var e = document.getElementById("#" + newState);
-    var originalColor = e.style.backgroundColor;
-    e.style.backgroundColor = "white";
+    var m = "#" + newState;
+    var e = JQuery(m);
+    var originalColor = e.css("background-color");
+    e.css("background-color", "white");
     //delay for a moment
-    e.style.backgroundColor = originalColor;
+    e.css("background-color", originalColor);
     //onChange
     var gs = this.props.gameState;
     gs.push(newState);
-    onChange(gs, this.props.userState); 
+    onChange(gs, this.props.userState, true); 
   }
   randomInt() {
     var min = Math.ceil(0);
