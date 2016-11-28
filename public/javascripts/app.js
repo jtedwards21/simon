@@ -1,5 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "components/app";
+import Simon from "components/simon";
 
-ReactDOM.render(<App />, document.getElementById("content"));
+var gameState=[];
+var userState=[];
+
+ReactDOM.render(<Simon gameState={gameState} userState={userState}/>, document.getElementById("content"));
