@@ -21572,6 +21572,7 @@
 	    key: "addColorClick",
 	    value: function addColorClick(e) {
 	      console.log('color');
+	      var targetId = e.target.id;
 	      var s = this.props.userState;
 	      s.push(e.target.id);
 	      var l = s.length;
@@ -21580,24 +21581,29 @@
 	      var same = s[curr] == gameS[curr];
 	      if (same == false) {
 	        //Blink Red and Dump
-	        var originalColor = e.target.style.backgroundColor;
-	        e.target.style.backgroundColor = "red";
-	        //Delay for a moment
-	        e.target.style.backgroundColor = originalColor;
+	        var originalColor = (0, _jquery2.default)("#" + targetId).css("background-color");
+	        (0, _jquery2.default)("#" + targetId).animate({
+	          backgroundColor: "red"
+	        }, 5000);
+	        (0, _jquery2.default)("#" + targetId).animate({
+	          backgroundColor: originalColor
+	        }, 5000);
 	        onChange([], [], false);
 	      } else {
 	        if (l == this.props.gameState.length) {
-	          //Blink green and get more gameState pieces
-	          var originalColor = e.target.style.backgroundColor;
-	          e.target.style.backgroundColor = "green";
-	          //Delay for a moment
-	          e.target.style.backgroundColor = originalColor;
+	          var originalColor = (0, _jquery2.default)("#" + targetId).css("background-color");
+	          (0, _jquery2.default)("#" + targetId).animate({
+	            backgroundColor: "green"
+	          }, 5000);
+	          (0, _jquery2.default)("#" + targetId).animate({
+	            backgroundColor: originalColor
+	          }, 5000);
 	          var ri = this.randomInt();
 	          var newState = this.buttons[ri];
 	          var gs = this.props.gameState;
 	          gs.push(newState);
 	          //Show new gamestate before rerender
-	          for (var i = 0; i < this.gs.length; i++) {
+	          for (var i = 0; i < gs.length; i++) {
 	            this.lightButton(gs[i]);
 	          }
 	          //rerender
@@ -21606,18 +21612,17 @@
 	          //continue current state
 	        }
 	      }
-	      //check lengths
-	      //if not the same allow to continue to click
-	      //if the same blink green and finish
 	    }
 	  }, {
 	    key: "lightButton",
 	    value: function lightButton(id) {
-	      var target = document.getElementById("#" + id);
-	      var originalColor = target.style.backgroundColor;
-	      target.style.backgroundColor = "white";
-	      //Delay for a moment
-	      target.style.backgroundColor = originalColor;
+	      var originalColor = (0, _jquery2.default)("#" + id).css("background-color");
+	      (0, _jquery2.default)("#" + targetId).animate({
+	        backgroundColor: "white"
+	      }, 5000);
+	      (0, _jquery2.default)("#" + targetId).animate({
+	        backgroundColor: originalColor
+	      }, 5000);
 	    }
 	  }, {
 	    key: "startGame",

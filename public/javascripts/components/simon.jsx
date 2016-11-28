@@ -28,30 +28,30 @@ export default class Simon extends React.Component {
     var same = s[curr] == gameS[curr];
     if(same == false){
 	//Blink Red and Dump
-	var originalColor = $("#" + targetId).css("background-color");
-	$("#" + targetId).animate({
-	background-color: "red"
+	var originalColor = JQuery("#" + targetId).css("background-color");
+	JQuery("#" + targetId).animate({
+	backgroundColor: "red"
 }, 5000);
-	$("#" + targetId).animate({
-	background-color: originalColor
+	JQuery("#" + targetId).animate({
+	backgroundColor: originalColor
 }, 5000);
 	onChange([], [], false);
     }
     else{
       if(l == this.props.gameState.length){
-	var originalColor = $("#" + targetId).css("background-color");
-	$("#" + targetId).animate({
-	background-color: "green"
+	var originalColor = JQuery("#" + targetId).css("background-color");
+	JQuery("#" + targetId).animate({
+	backgroundColor: "green"
 }, 5000);
-	$("#" + targetId).animate({
-	background-color: originalColor
+	JQuery("#" + targetId).animate({
+	backgroundColor: originalColor
 }, 5000);
         var ri = this.randomInt();
 	var newState = this.buttons[ri];
 	var gs = this.props.gameState;
 	gs.push(newState);
         //Show new gamestate before rerender
-	for(var i = 0; i < this.gs.length;i++){
+	for(var i = 0; i < gs.length;i++){
 	  this.lightButton(gs[i]);
         }
 	//rerender
@@ -63,12 +63,12 @@ export default class Simon extends React.Component {
     }
   }
   lightButton(id) {
-	var originalColor = $("#" + id).css("background-color");
-	$("#" + targetId).animate({
-	background-color: "white"
+	var originalColor = JQuery("#" + id).css("background-color");
+	JQuery("#" + targetId).animate({
+	backgroundColor: "white"
 }, 5000);
-	$("#" + targetId).animate({
-	background-color: originalColor
+	JQuery("#" + targetId).animate({
+	backgroundColor: originalColor
 }, 5000);
   }
   startGame(){
