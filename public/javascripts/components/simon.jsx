@@ -19,6 +19,7 @@ export default class Simon extends React.Component {
   }
   addColorClick(e) {
     console.log('color');
+　　　　var targetId = e.target.id;
     var s = this.props.userState;
     s.push(e.target.id)
     var l = s.length;
@@ -27,19 +28,24 @@ export default class Simon extends React.Component {
     var same = s[curr] == gameS[curr];
     if(same == false){
 	//Blink Red and Dump
-　　　　　　　　var originalColor = e.target.style.backgroundColor;
-	e.target.style.backgroundColor = "red";
-        //Delay for a moment
-	e.target.style.backgroundColor = originalColor;
+	var originalColor = $("#" + targetId).css("background-color");
+	$("#" + targetId).animate({
+	background-color: "red"
+}, 5000);
+	$("#" + targetId).animate({
+	background-color: originalColor
+}, 5000);
 	onChange([], [], false);
     }
     else{
       if(l == this.props.gameState.length){
-	//Blink green and get more gameState pieces
-　　　　　　　　var originalColor = e.target.style.backgroundColor;
-	e.target.style.backgroundColor = "green";
-        //Delay for a moment
-	e.target.style.backgroundColor = originalColor;
+	var originalColor = $("#" + targetId).css("background-color");
+	$("#" + targetId).animate({
+	background-color: "green"
+}, 5000);
+	$("#" + targetId).animate({
+	background-color: originalColor
+}, 5000);
         var ri = this.randomInt();
 	var newState = this.buttons[ri];
 	var gs = this.props.gameState;
@@ -55,16 +61,15 @@ export default class Simon extends React.Component {
 	//continue current state
       }
     }
-    //check lengths
-    //if not the same allow to continue to click
-    //if the same blink green and finish
   }
   lightButton(id) {
-        var target = document.getElementById("#" + id);
-　　　　　　　　var originalColor = target.style.backgroundColor;
-	target.style.backgroundColor = "white";
-        //Delay for a moment
-	target.style.backgroundColor = originalColor;
+	var originalColor = $("#" + id).css("background-color");
+	$("#" + targetId).animate({
+	background-color: "white"
+}, 5000);
+	$("#" + targetId).animate({
+	background-color: originalColor
+}, 5000);
   }
   startGame(){
     //Get a new GameState

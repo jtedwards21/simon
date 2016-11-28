@@ -21571,6 +21571,7 @@
 	  _createClass(Simon, [{
 	    key: "addColorClick",
 	    value: function addColorClick(e) {
+	      console.log('color');
 	      var s = this.props.userState;
 	      s.push(e.target.id);
 	      var l = s.length;
@@ -21625,7 +21626,6 @@
 	      var b = this.randomInt();
 	      var newState = this.buttons[b];
 	      //Show the gameState
-	      console.log(newState);
 	      var m = "#" + newState;
 	      var e = (0, _jquery2.default)(m);
 	      var originalColor = e.css("background-color");
