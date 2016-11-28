@@ -90,10 +90,10 @@ export default class Simon extends React.Component {
 console.log(m);
     var originalColor = JQuery(m).css("background-color");
     JQuery(m).animate({
-	backgroundColor: "white"
+	opacity: 0
 }, 5000, function(){
 JQuery(m).animate({
-	backgroundColor: originalColor
+	opacity: 1
 }, 5000, function(){
     gs.push(newState);
     onChange(gs, us, true); 

@@ -21645,10 +21645,10 @@
 	      console.log(m);
 	      var originalColor = (0, _jquery2.default)(m).css("background-color");
 	      (0, _jquery2.default)(m).animate({
-	        backgroundColor: "white"
+	        opacity: 0
 	      }, 5000, function () {
 	        (0, _jquery2.default)(m).animate({
-	          backgroundColor: originalColor
+	          opacity: 1
 	        }, 5000, function () {
 	          gs.push(newState);
 	          onChange(gs, us, true);
