@@ -85,15 +85,23 @@ export default class Simon extends React.Component {
     var newState = this.buttons[b];
     //Show the gameState
     var m = "#" + newState;
-    var e = JQuery(m);
-    var originalColor = e.css("background-color");
-    e.css("background-color", "white");
-    //delay for a moment
-    e.css("background-color", originalColor);
-    //onChange
     var gs = this.props.gameState;
+    var us = this.props.userState
+console.log(m);
+    var originalColor = JQuery(m).css("background-color");
+    JQuery(m).animate({
+	backgroundColor: "white"
+}, 5000, function(){
+JQuery(m).animate({
+	backgroundColor: originalColor
+}, 5000, function(){
     gs.push(newState);
-    onChange(gs, this.props.userState, true); 
+    onChange(gs, us, true); 
+});
+});
+    
+    //onChange
+    
   }
   randomInt() {
     var min = Math.ceil(0);

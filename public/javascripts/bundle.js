@@ -21640,15 +21640,22 @@
 	      var newState = this.buttons[b];
 	      //Show the gameState
 	      var m = "#" + newState;
-	      var e = (0, _jquery2.default)(m);
-	      var originalColor = e.css("background-color");
-	      e.css("background-color", "white");
-	      //delay for a moment
-	      e.css("background-color", originalColor);
-	      //onChange
 	      var gs = this.props.gameState;
-	      gs.push(newState);
-	      onChange(gs, this.props.userState, true);
+	      var us = this.props.userState;
+	      console.log(m);
+	      var originalColor = (0, _jquery2.default)(m).css("background-color");
+	      (0, _jquery2.default)(m).animate({
+	        backgroundColor: "white"
+	      }, 5000, function () {
+	        (0, _jquery2.default)(m).animate({
+	          backgroundColor: originalColor
+	        }, 5000, function () {
+	          gs.push(newState);
+	          onChange(gs, us, true);
+	        });
+	      });
+
+	      //onChange
 	    }
 	  }, {
 	    key: "randomInt",
@@ -21670,13 +21677,13 @@
 	            "div",
 	            { className: "top-row" },
 	            _react2.default.createElement("div", { id: "button-one", style: this.props.canClick ? this.hasCursor : this.noCursor, onClick: this.addColorClick.bind(this), className: "button left-col" }),
-	            _react2.default.createElement("div", { id: "button-two", onClick: this.addColorClick.bind(this), className: "button right-col" })
+	            _react2.default.createElement("div", { id: "button-two", style: this.props.canClick ? this.hasCursor : this.noCursor, onClick: this.addColorClick.bind(this), className: "button right-col" })
 	          ),
 	          _react2.default.createElement(
 	            "div",
 	            { className: "bottom-row" },
-	            _react2.default.createElement("div", { id: "button-three", onClick: this.addColorClick.bind(this), className: "button left-col" }),
-	            _react2.default.createElement("div", { id: "button-four", onClick: this.addColorClick.bind(this), className: "button right-col" })
+	            _react2.default.createElement("div", { id: "button-three", style: this.props.canClick ? this.hasCursor : this.noCursor, onClick: this.addColorClick.bind(this), className: "button left-col" }),
+	            _react2.default.createElement("div", { id: "button-four", style: this.props.canClick ? this.hasCursor : this.noCursor, onClick: this.addColorClick.bind(this), className: "button right-col" })
 	          )
 	        ),
 	        _react2.default.createElement(
@@ -21696,7 +21703,7 @@
 	            ),
 	            _react2.default.createElement(
 	              "button",
-	              { onClick: this.startGame.bind(this) },
+	              { style: this.props.canClick ? this.noCursor : this.hasCursor, onClick: this.startGame.bind(this) },
 	              "Start"
 	            )
 	          )
