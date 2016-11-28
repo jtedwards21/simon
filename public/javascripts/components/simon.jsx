@@ -109,10 +109,14 @@ export default class Simon extends React.Component {
             </div>
 	  </div>
 	</div>
-	<div className="display-container">
-	  <span className="display"></span>
+	<div className="controls-container">
+	  <div className="controls">
+	    <div className="display-container">
+	      <span className="display"></span>
+	    </div>
+            <button　onClick={this.startGame.bind(this)}>Start</button>
+	  </div>
 	</div>
-        <button　onClick={this.startGame.bind(this)}>Start</button>
       </div>
     )
   }

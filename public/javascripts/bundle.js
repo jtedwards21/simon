@@ -21673,13 +21673,21 @@
 	        ),
 	        _react2.default.createElement(
 	          "div",
-	          { className: "display-container" },
-	          _react2.default.createElement("span", { className: "display" })
-	        ),
-	        _react2.default.createElement(
-	          "button",
-	          { onClick: this.startGame.bind(this) },
-	          "Start"
+	          { className: "controls-container" },
+	          _react2.default.createElement(
+	            "div",
+	            { className: "controls" },
+	            _react2.default.createElement(
+	              "div",
+	              { className: "display-container" },
+	              _react2.default.createElement("span", { className: "display" })
+	            ),
+	            _react2.default.createElement(
+	              "button",
+	              { onClick: this.startGame.bind(this) },
+	              "Start"
+	            )
+	          )
 	        )
 	      );
 	    }
