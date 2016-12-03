@@ -39,10 +39,10 @@ export default class Simon extends React.Component {
     if(e.target.id == gs[i]){
       if(gs.length == 20){
       this.blinkButton(newUS)
-      //Show a win message TODO
+      this.setState({messageColor: "green", message: "You Win!", aMessage: true})
+      this.blinkMessage();
       } else {
       this.blinkButton(newUS, "green");
-      //Show a very good message TODO
 　　　　　　this.setState({messageColor: "green", message: "Very Good!", aMessage: true})
       this.blinkMessage();
       this.addGameState();
@@ -50,7 +50,8 @@ export default class Simon extends React.Component {
       }
     } else {
       this.blinkButton(newUS, "red");
-      //Show a you lose method TODO
+      this.setState({messageColor: "red", message: "Oh No!", aMessage: true})
+      this.blinkMessage();
       this.setState({userState: [], gameState: [], canClick: false, inGame: false, stateCount: 0});
     }
     
