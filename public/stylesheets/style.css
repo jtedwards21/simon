@@ -62,22 +62,22 @@ body {
   border-left: 2px solid #FBFBFB;
 }
 
-#button-one {
+#buttonOne {
   background-color: blue;
   border-top-left-radius: 96px;
 }
 
-#button-two {
+#buttonTwo {
   background-color: red;
   border-top-right-radius: 96px;
 }
 
-#button-three {
+#buttonThree {
   background-color: green;
   border-bottom-left-radius: 96px;
 }
 
-#button-four {
+#buttonFour {
   background-color: yellow;
   border-bottom-right-radius: 96px;
 }

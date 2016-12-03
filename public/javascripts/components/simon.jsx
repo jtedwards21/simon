@@ -6,7 +6,7 @@ export default class Simon extends React.Component {
   constructor() {
     super();
 
-    this.buttons = ["button-one", "button-two", "button-three", "button-four"];
+    this.buttons = ["buttonOne", "buttonTwo", "buttonThree", "buttonFour"];
 
     this.state = {
       canClick: true,
@@ -26,17 +26,19 @@ export default class Simon extends React.Component {
     };
   }
   buttonClick(e) {
+    console.log('dog');
     var newUS = "#" + e.target.id;
     var us = this.state.userState;
     var gs = this.state.gameState;
-    var i = this.state.stateCount
-    if(newUS == gs[i]){
+    var i = this.state.stateCount - 1;
+    if(e.target.id == gs[i]){
       if(gs.length == 20){
       this.blinkButton(newUS)
       //Show a win message TODO
       } else {
       this.blinkButton(newUS, "green");
-      addGameState();
+      this.addGameState();
+      
       }
     } else {
       this.blinkButton(newUS, "red");
@@ -47,11 +49,16 @@ export default class Simon extends React.Component {
   }
   //Blinks Twice
   blinkButton(id, color){
-    JQuery(id).animate({opacity: 1}, "slow", function(){
-JQuery(id).animate({opacity: .1}, "slow", function(){
-JQuery(id).animate({opacity: .8}, "slow", function(){
-JQuery(id).css("background-color", color);
-JQuery(id).css("background-color","red");//This should eventually go back to original color
+    JQuery(id).animate({opacity: 1}, "fast", function(){
+JQuery(id).animate({opacity: .1}, "fast", function(){
+JQuery(id).animate({opacity: .7}, "fast", function(){
+JQuery(id).animate({opacity: 1}, "fast", function(){
+JQuery(id).animate({opacity: .1}, "fast", function(){
+JQuery(id).animate({opacity: .7}, "fast", function(){
+
+})
+})
+})
 })
 })
 })
@@ -81,30 +88,32 @@ JQuery(id).css("background-color","red");//This should eventually go back to ori
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
   render() {
-    var hints = this.state.gameState.map(function(d){
+    var on = this.state.hintOn;
+    var hints = this.state.gameState.map(function(d, i){
+        var button = d.substring(1)
 	var k = {
-	  #button-one: "blue",
-	  #button-two: "red",
-	  #button-three: "green",
-	  #button-four: "yellow"
+	  buttonOne: "blue",
+	  buttonTwo: "red",
+	  buttonThree: "green",
+	  buttonFour: "yellow"
 }
         var desc = Object.getOwnPropertyDescriptor(k, d);
 	var color = desc.value;
-	return <Hint color={color} show={this.state.hintOn}/>
+	return <Hint key={i} color={color} show={on}/>
 })
     return(
       <div className="box">
 	<div className="buttons">
           <div className="top-row">
-	    <div id="button-one" style={(this.state.canClick) ? this.hasCursor : this.noCursor} onClick={this.buttonClick.bind(this)} className="button left-col">
+	    <div id="buttonOne" style={(this.state.canClick) ? this.hasCursor : this.noCursor} onClick={this.buttonClick.bind(this)} className="button left-col">
             </div>
-            <div id="button-two" style={(this.state.canClick) ? this.hasCursor : this.noCursor} onClick={this.buttonClick.bind(this)} className="button right-col">
+            <div id="buttonTwo" style={(this.state.canClick) ? this.hasCursor : this.noCursor} onClick={this.buttonClick.bind(this)} className="button right-col">
             </div>
 	  </div>
           <div className="bottom-row">
-            <div id="button-three" style={(this.state.canClick) ? this.hasCursor : this.noCursor} onClick={this.buttonClick.bind(this)} className="button left-col">
+            <div id="buttonThree" style={(this.state.canClick) ? this.hasCursor : this.noCursor} onClick={this.buttonClick.bind(this)} className="button left-col">
             </div>
-            <div id="button-four" style={(this.state.canClick) ? this.hasCursor : this.noCursor} onClick={this.buttonClick.bind(this)} className="button right-col">
+            <div id="buttonFour" style={(this.state.canClick) ? this.hasCursor : this.noCursor} onClick={this.buttonClick.bind(this)} className="button right-col">
             </div>
 	  </div>
 	</div>

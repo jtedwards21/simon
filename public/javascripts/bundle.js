@@ -21515,7 +21515,7 @@
 /* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -21530,6 +21530,10 @@
 	var _jquery = __webpack_require__(179);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _hint = __webpack_require__(181);
+
+	var _hint2 = _interopRequireDefault(_hint);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21547,14 +21551,15 @@
 
 	    var _this = _possibleConstructorReturn(this, (Simon.__proto__ || Object.getPrototypeOf(Simon)).call(this));
 
-	    _this.buttons = ["button-one", "button-two", "button-three", "button-four"];
+	    _this.buttons = ["buttonOne", "buttonTwo", "buttonThree", "buttonFour"];
 
 	    _this.state = {
 	      canClick: true,
 	      userState: [],
 	      gameState: [],
 	      stateCount: 0,
-	      inGame: false
+	      inGame: false,
+	      hintOn: false
 	    };
 
 	    _this.hasCursor = {
@@ -21568,22 +21573,23 @@
 	  }
 
 	  _createClass(Simon, [{
-	    key: "buttonClick",
+	    key: 'buttonClick',
 	    value: function buttonClick(e) {
+	      console.log('dog');
 	      var newUS = "#" + e.target.id;
 	      var us = this.state.userState;
 	      var gs = this.state.gameState;
-	      var i = this.state.stateCount;
-	      if (newUS == gs[i]) {
+	      var i = this.state.stateCount - 1;
+	      if (e.target.id == gs[i]) {
 	        if (gs.length == 20) {
 	          this.blinkButton(newUS);
 	          //Show a win message TODO
 	        } else {
-	          blinkButton(newUS, "green");
-	          addGameState();
+	          this.blinkButton(newUS, "green");
+	          this.addGameState();
 	        }
 	      } else {
-	        blinkButton(newUS, "red");
+	        this.blinkButton(newUS, "red");
 	        //Show a you lose method TODO
 	        this.setState({ userState: [], gameState: [], canClick: false, inGame: false, stateCount: 0 });
 	      }
@@ -21591,19 +21597,22 @@
 	    //Blinks Twice
 
 	  }, {
-	    key: "blinkButton",
+	    key: 'blinkButton',
 	    value: function blinkButton(id, color) {
-	      (0, _jquery2.default)(id).animate({ opacity: 1 }, "slow", function () {
-	        (0, _jquery2.default)(id).animate({ opacity: .1 }, "slow", function () {
-	          (0, _jquery2.default)(id).animate({ opacity: .8 }, "slow", function () {
-	            (0, _jquery2.default)(id).css("background-color", color);
-	            (0, _jquery2.default)(id).css("background-color", "red"); //This should eventually go back to original color
+	      (0, _jquery2.default)(id).animate({ opacity: 1 }, "fast", function () {
+	        (0, _jquery2.default)(id).animate({ opacity: .1 }, "fast", function () {
+	          (0, _jquery2.default)(id).animate({ opacity: .7 }, "fast", function () {
+	            (0, _jquery2.default)(id).animate({ opacity: 1 }, "fast", function () {
+	              (0, _jquery2.default)(id).animate({ opacity: .1 }, "fast", function () {
+	                (0, _jquery2.default)(id).animate({ opacity: .7 }, "fast", function () {});
+	              });
+	            });
 	          });
 	        });
 	      });
 	    }
 	  }, {
-	    key: "addGameState",
+	    key: 'addGameState',
 	    value: function addGameState(newUS) {
 	      //Can I change the state here without throwing everything off?
 	      this.setState({ canClick: false });
@@ -21617,66 +21626,81 @@
 	        us.push(newUS);
 	      }
 	      var sc = this.state.stateCount + 1;
-	      //Show the color of all gs
+	      this.setState({ hintOn: true });
+	      this.setState({ hintOn: false });
 	      gs.push(newState);
 	      this.setState({ gameState: gs, stateCount: sc, userState: us, inGame: true, canClick: true });
 	    }
 	  }, {
-	    key: "startGame",
+	    key: 'startGame',
 	    value: function startGame() {
 	      this.addGameState();
 	    }
 	  }, {
-	    key: "randomInt",
+	    key: 'randomInt',
 	    value: function randomInt() {
 	      var min = Math.ceil(0);
 	      var max = Math.floor(3);
 	      return Math.floor(Math.random() * (max - min + 1)) + min;
 	    }
 	  }, {
-	    key: "render",
+	    key: 'render',
 	    value: function render() {
+	      var on = this.state.hintOn;
+	      var hints = this.state.gameState.map(function (d, i) {
+	        var button = d.substring(1);
+	        var k = {
+	          buttonOne: "blue",
+	          buttonTwo: "red",
+	          buttonThree: "green",
+	          buttonFour: "yellow"
+	        };
+	        var desc = Object.getOwnPropertyDescriptor(k, d);
+	        var color = desc.value;
+	        return _react2.default.createElement(_hint2.default, { key: i, color: color, show: on });
+	      });
 	      return _react2.default.createElement(
-	        "div",
-	        { className: "box" },
+	        'div',
+	        { className: 'box' },
 	        _react2.default.createElement(
-	          "div",
-	          { className: "buttons" },
+	          'div',
+	          { className: 'buttons' },
 	          _react2.default.createElement(
-	            "div",
-	            { className: "top-row" },
-	            _react2.default.createElement("div", { id: "button-one", style: this.state.canClick ? this.hasCursor : this.noCursor, onClick: this.buttonClick.bind(this), className: "button left-col" }),
-	            _react2.default.createElement("div", { id: "button-two", style: this.state.canClick ? this.hasCursor : this.noCursor, onClick: this.buttonClick.bind(this), className: "button right-col" })
+	            'div',
+	            { className: 'top-row' },
+	            _react2.default.createElement('div', { id: 'buttonOne', style: this.state.canClick ? this.hasCursor : this.noCursor, onClick: this.buttonClick.bind(this), className: 'button left-col' }),
+	            _react2.default.createElement('div', { id: 'buttonTwo', style: this.state.canClick ? this.hasCursor : this.noCursor, onClick: this.buttonClick.bind(this), className: 'button right-col' })
 	          ),
 	          _react2.default.createElement(
-	            "div",
-	            { className: "bottom-row" },
-	            _react2.default.createElement("div", { id: "button-three", style: this.state.canClick ? this.hasCursor : this.noCursor, onClick: this.buttonClick.bind(this), className: "button left-col" }),
-	            _react2.default.createElement("div", { id: "button-four", style: this.state.canClick ? this.hasCursor : this.noCursor, onClick: this.buttonClick.bind(this), className: "button right-col" })
+	            'div',
+	            { className: 'bottom-row' },
+	            _react2.default.createElement('div', { id: 'buttonThree', style: this.state.canClick ? this.hasCursor : this.noCursor, onClick: this.buttonClick.bind(this), className: 'button left-col' }),
+	            _react2.default.createElement('div', { id: 'buttonFour', style: this.state.canClick ? this.hasCursor : this.noCursor, onClick: this.buttonClick.bind(this), className: 'button right-col' })
 	          )
 	        ),
 	        _react2.default.createElement(
-	          "div",
-	          { className: "controls-container" },
+	          'div',
+	          { className: 'controls-container' },
 	          _react2.default.createElement(
-	            "div",
-	            { className: "controls" },
+	            'div',
+	            { className: 'controls' },
 	            _react2.default.createElement(
-	              "div",
-	              { className: "display-container" },
+	              'div',
+	              { className: 'display-container' },
 	              _react2.default.createElement(
-	                "span",
-	                { className: "display" },
+	                'span',
+	                { className: 'display' },
 	                this.state.stateCount
 	              )
 	            ),
 	            _react2.default.createElement(
-	              "button",
+	              'button',
 	              { style: this.state.canClick ? this.noCursor : this.hasCursor, onClick: this.startGame.bind(this) },
-	              "Start"
+	              'Start'
 	            )
 	          )
-	        )
+	        ),
+	        hints
 	      );
 	    }
 	  }]);
@@ -23353,6 +23377,59 @@
 		}
 		return module;
 	};
+
+/***/ },
+/* 181 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Hint = function (_React$Component) {
+	  _inherits(Hint, _React$Component);
+
+	  function Hint() {
+	    _classCallCheck(this, Hint);
+
+	    var _this = _possibleConstructorReturn(this, (Hint.__proto__ || Object.getPrototypeOf(Hint)).call(this));
+
+	    _this.state = {};
+
+	    return _this;
+	  }
+
+	  _createClass(Hint, [{
+	    key: "render",
+	    value: function render() {
+	      return _react2.default.createElement(
+	        "div",
+	        { className: "hint" },
+	        this.props.color
+	      );
+	    }
+	  }]);
+
+	  return Hint;
+	}(_react2.default.Component);
+
+	exports.default = Hint;
 
 /***/ }
 /******/ ]);
