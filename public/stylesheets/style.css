@@ -17,6 +17,64 @@ body {
   height: 100%;
 }
 
+.hintContainer {
+margin-left: auto;
+margin-right: auto;
+float: none;
+width: 100px;
+height: 30px;
+}
+
+.hint-enter {
+  opacity: 0.01;
+}
+
+.hint-enter.hint-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.hint-leave {
+  opacity: 1;
+}
+
+.hint-leave.example-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
+}
+
+.message-enter {
+  opacity: 0.01;
+}
+
+.message-enter.message-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.message-leave {
+  opacity: 1;
+}
+
+.message-leave.example-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
+}
+
+
+.message {
+  text-align: center;
+}
+
+.horizontalHints{
+  display: inline-flex;
+}
+
+.hint{
+  width: 10px;
+  height: 10px;
+　　border-radius: 5px;
+}
 
 .box {
   border-radius: 16px;

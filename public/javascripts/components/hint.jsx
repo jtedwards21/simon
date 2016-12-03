@@ -12,9 +12,9 @@ export default class Hint extends React.Component {
    
   }
   render() {
+    var s = {backgroundColor: this.props.color}
     return(
-      <div className="hint">
-	{this.props.color}
+      <div className="hint" style={s}>
       </div>
     )
   }

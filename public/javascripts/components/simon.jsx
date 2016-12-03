@@ -1,6 +1,8 @@
 import React from "react";
 import JQuery from 'jquery';
 import Hint from './hint';
+import Message from './message';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 export default class Simon extends React.Component {
   constructor() {
@@ -14,7 +16,10 @@ export default class Simon extends React.Component {
 　　　　　　gameState: [],
       stateCount: 0,
       inGame: false,
-      hintOn: false
+      hintOn: false,
+      messageColor: "black",
+      message: "",
+      aMessage: false
     };
 
     this.hasCursor = {
@@ -37,6 +42,9 @@ export default class Simon extends React.Component {
       //Show a win message TODO
       } else {
       this.blinkButton(newUS, "green");
+      //Show a very good message TODO
+　　　　　　this.setState({messageColor: "green", message: "Very Good!", aMessage: true})
+      this.blinkMessage();
       this.addGameState();
       
       }
@@ -48,6 +56,11 @@ export default class Simon extends React.Component {
     
   }
   //Blinks Twice
+  blinkMessage(){
+JQuery(".message").animate({opacity: .1}, "fast", function(){
+JQuery(".message").animate({opacity: 1}, "fast")
+})
+  }
   blinkButton(id, color){
     JQuery(id).animate({opacity: 1}, "fast", function(){
 JQuery(id).animate({opacity: .1}, "fast", function(){
@@ -101,6 +114,13 @@ JQuery(id).animate({opacity: .7}, "fast", function(){
 	var color = desc.value;
 	return <Hint key={i} color={color} show={on}/>
 })
+    var messages;
+    if(this.state.aMessage == true){
+	messages = <Message message={this.state.message} color={this.state.messageColor} />
+    } else {
+	messages = [];
+    }
+    
     return(
       <div className="box">
 	<div className="buttons">
@@ -125,7 +145,25 @@ JQuery(id).animate({opacity: .7}, "fast", function(){
             <button style={(this.state.canClick) ? this.noCursor : this.hasCursor}　onClick={this.startGame.bind(this)}>Start</button>
 	  </div>
 	</div>
-	{hints}
+	<div className="messageContainer">
+	  <ReactCSSTransitionGroup
+              transitionName="message"
+              transitionEnterTimeout={500}
+              transitionLeaveTimeout={300}>
+                {messages}
+            </ReactCSSTransitionGroup>
+	</div>
+	<div className="hintContainer">
+	  <div className="horizontalHints">
+	    <ReactCSSTransitionGroup
+              transitionName="hint"
+              transitionEnterTimeout={500}
+              transitionLeaveTimeout={300}>
+                {hints}
+            </ReactCSSTransitionGroup>
+
+	  </div>
+	</div>
       </div>
     )
   }
