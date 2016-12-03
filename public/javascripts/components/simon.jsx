@@ -1,6 +1,6 @@
 import React from "react";
 import JQuery from 'jquery';
-
+import Hint from './hint';
 
 export default class Simon extends React.Component {
   constructor() {
@@ -13,7 +13,8 @@ export default class Simon extends React.Component {
       userState: [],
 　　　　　　gameState: [],
       stateCount: 0,
-      inGame: false
+      inGame: false,
+      hintOn: false
     };
 
     this.hasCursor = {
@@ -34,11 +35,11 @@ export default class Simon extends React.Component {
       this.blinkButton(newUS)
       //Show a win message TODO
       } else {
-      blinkButton(newUS, "green");
+      this.blinkButton(newUS, "green");
       addGameState();
       }
     } else {
-      blinkButton(newUS, "red");
+      this.blinkButton(newUS, "red");
       //Show a you lose method TODO
       this.setState({userState: [], gameState: [], canClick: false, inGame: false, stateCount: 0});
     }
@@ -66,7 +67,8 @@ JQuery(id).css("background-color","red");//This should eventually go back to ori
     var us = this.state.userState;
     if(newUS !== 0){us.push(newUS)}
     var sc = this.state.stateCount + 1;
-    //Show the color of all gs
+    this.setState({hintOn: true});
+    this.setState({hintOn: false})
     gs.push(newState);
     this.setState({gameState: gs, stateCount: sc, userState: us, inGame: true, canClick: true});
   }
@@ -79,6 +81,17 @@ JQuery(id).css("background-color","red");//This should eventually go back to ori
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
   render() {
+    var hints = this.state.gameState.map(function(d){
+	var k = {
+	  #button-one: "blue",
+	  #button-two: "red",
+	  #button-three: "green",
+	  #button-four: "yellow"
+}
+        var desc = Object.getOwnPropertyDescriptor(k, d);
+	var color = desc.value;
+	return <Hint color={color} show={this.state.hintOn}/>
+})
     return(
       <div className="box">
 	<div className="buttons">
@@ -98,11 +111,12 @@ JQuery(id).css("background-color","red");//This should eventually go back to ori
 	<div className="controls-container">
 	  <div className="controls">
 	    <div className="display-container">
-	      <span className="display">{this.props.gameState.length}</span>
+	      <span className="display">{this.state.stateCount}</span>
 	    </div>
-            <button style={(this.props.canClick) ? this.noCursor : this.hasCursor}　onClick={this.startGame.bind(this)}>Start</button>
+            <button style={(this.state.canClick) ? this.noCursor : this.hasCursor}　onClick={this.startGame.bind(this)}>Start</button>
 	  </div>
 	</div>
+	{hints}
       </div>
     )
   }

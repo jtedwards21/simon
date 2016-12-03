@@ -60,11 +60,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var gameState = [];
-	var userState = [];
-	var canClick = false;
-
-	_reactDom2.default.render(_react2.default.createElement(_simon2.default, { gameState: gameState, canClick: canClick, userState: userState }), document.getElementById("content"));
+	_reactDom2.default.render(_react2.default.createElement(_simon2.default, null), document.getElementById("content"));
 
 /***/ },
 /* 1 */
@@ -21531,10 +21527,6 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(32);
-
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-
 	var _jquery = __webpack_require__(179);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
@@ -21546,10 +21538,6 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var onChange = function onChange(gameState, userState, canClick) {
-	  _reactDom2.default.render(_react2.default.createElement(Simon, { canClick: canClick, gameState: gameState, userState: userState }), document.getElementById("content"));
-	};
 
 	var Simon = function (_React$Component) {
 	  _inherits(Simon, _React$Component);
@@ -21563,7 +21551,10 @@
 
 	    _this.state = {
 	      canClick: true,
-	      userState: []
+	      userState: [],
+	      gameState: [],
+	      stateCount: 0,
+	      inGame: false
 	    };
 
 	    _this.hasCursor = {
@@ -21577,95 +21568,63 @@
 	  }
 
 	  _createClass(Simon, [{
-	    key: "addColorClick",
-	    value: function addColorClick(e) {
-	      console.log('color');
-	      var targetId = e.target.id;
-	      var change = (0, _jquery2.default)("#" + targetId);
-	      var s = this.props.userState;
-	      s.push(e.target.id);
-	      var l = s.length;
-	      var gameS = this.props.gameState.slice(0, l);
-	      var curr = l - 1;
-	      var same = s[curr] == gameS[curr];
-	      if (same == false) {
-	        //Blink Red and Dump
-	        change.css("background-color", "red");
-	        change.animate({
-	          opacity: 0
-	        }, 100);
-	        change.animate({
-	          opacity: 1
-	        }, 100);
-	        onChange([], [], false);
-	      } else {
-	        if (l == this.props.gameState.length) {
-	          var originalColor = change.css("background-color");
-	          change.css("background-color", "green");
-	          change.animate({
-	            opacity: 0
-	          }, 100);
-	          change.animate({
-	            opacity: 1
-	          }, 100);
-
-	          change.css("background-color", originalColor);
-	          var ri = this.randomInt();
-	          var newState = this.buttons[ri];
-	          var gs = this.props.gameState;
-	          gs.push(newState);
-	          this.lightButtons(0, gs, this.lightButtons);
-	          //Show new gamestate before rerender
-	          //This is a big issue, 
-	          /*
-	          for(var i = 0; i < gs.length;i++){
-	            this.lightButton(gs[i]);
-	                 }*/
-	          //rerender
-	          onChange(gs, this.props.userState, true);
+	    key: "buttonClick",
+	    value: function buttonClick(e) {
+	      var newUS = "#" + e.target.id;
+	      var us = this.state.userState;
+	      var gs = this.state.gameState;
+	      var i = this.state.stateCount;
+	      if (newUS == gs[i]) {
+	        if (gs.length == 20) {
+	          this.blinkButton(newUS);
+	          //Show a win message TODO
 	        } else {
-	          //continue current state
+	          blinkButton(newUS, "green");
+	          addGameState();
 	        }
+	      } else {
+	        blinkButton(newUS, "red");
+	        //Show a you lose method TODO
+	        this.setState({ userState: [], gameState: [], canClick: false, inGame: false, stateCount: 0 });
 	      }
 	    }
-	    //render all the gamestates
+	    //Blinks Twice
 
 	  }, {
-	    key: "lightButtons",
-	    value: function lightButtons(i, gs, lb) {
-	      if (i < gs.length) {
-	        var originalColor = (0, _jquery2.default)("#" + gs[i]).css("background-color");
-	        (0, _jquery2.default)("#" + gs[i]).animate({
-	          opacity: 0
-	        }, 1000, (0, _jquery2.default)("#" + gs[i]).animate({
-	          opacity: 1
-	        }, 1000, lb(i + 1, gs, lb)));
+	    key: "blinkButton",
+	    value: function blinkButton(id, color) {
+	      (0, _jquery2.default)(id).animate({ opacity: 1 }, "slow", function () {
+	        (0, _jquery2.default)(id).animate({ opacity: .1 }, "slow", function () {
+	          (0, _jquery2.default)(id).animate({ opacity: .8 }, "slow", function () {
+	            (0, _jquery2.default)(id).css("background-color", color);
+	            (0, _jquery2.default)(id).css("background-color", "red"); //This should eventually go back to original color
+	          });
+	        });
+	      });
+	    }
+	  }, {
+	    key: "addGameState",
+	    value: function addGameState(newUS) {
+	      //Can I change the state here without throwing everything off?
+	      this.setState({ canClick: false });
+	      //Get a new GameState
+	      var b = this.randomInt();
+	      var newState = this.buttons[b];
+	      var m = "#" + newState;
+	      var gs = this.state.gameState;
+	      var us = this.state.userState;
+	      if (newUS !== 0) {
+	        us.push(newUS);
 	      }
+	      var sc = this.state.stateCount + 1;
+	      //Show the color of all gs
+	      gs.push(newState);
+	      this.setState({ gameState: gs, stateCount: sc, userState: us, inGame: true, canClick: true });
 	    }
 	  }, {
 	    key: "startGame",
 	    value: function startGame() {
-	      //Get a new GameState
-	      var b = this.randomInt();
-	      var newState = this.buttons[b];
-	      //Show the gameState
-	      var m = "#" + newState;
-	      var gs = this.props.gameState;
-	      var us = this.props.userState;
-	      console.log(m);
-	      var originalColor = (0, _jquery2.default)(m).css("background-color");
-	      (0, _jquery2.default)(m).animate({
-	        opacity: 0
-	      }, 1000, function () {
-	        (0, _jquery2.default)(m).animate({
-	          opacity: 1
-	        }, 1000, function () {
-	          gs.push(newState);
-	          onChange(gs, us, true);
-	        });
-	      });
-
-	      //onChange
+	      this.addGameState();
 	    }
 	  }, {
 	    key: "randomInt",
@@ -21686,14 +21645,14 @@
 	          _react2.default.createElement(
 	            "div",
 	            { className: "top-row" },
-	            _react2.default.createElement("div", { id: "button-one", style: this.props.canClick ? this.hasCursor : this.noCursor, onClick: this.addColorClick.bind(this), className: "button left-col" }),
-	            _react2.default.createElement("div", { id: "button-two", style: this.props.canClick ? this.hasCursor : this.noCursor, onClick: this.addColorClick.bind(this), className: "button right-col" })
+	            _react2.default.createElement("div", { id: "button-one", style: this.state.canClick ? this.hasCursor : this.noCursor, onClick: this.buttonClick.bind(this), className: "button left-col" }),
+	            _react2.default.createElement("div", { id: "button-two", style: this.state.canClick ? this.hasCursor : this.noCursor, onClick: this.buttonClick.bind(this), className: "button right-col" })
 	          ),
 	          _react2.default.createElement(
 	            "div",
 	            { className: "bottom-row" },
-	            _react2.default.createElement("div", { id: "button-three", style: this.props.canClick ? this.hasCursor : this.noCursor, onClick: this.addColorClick.bind(this), className: "button left-col" }),
-	            _react2.default.createElement("div", { id: "button-four", style: this.props.canClick ? this.hasCursor : this.noCursor, onClick: this.addColorClick.bind(this), className: "button right-col" })
+	            _react2.default.createElement("div", { id: "button-three", style: this.state.canClick ? this.hasCursor : this.noCursor, onClick: this.buttonClick.bind(this), className: "button left-col" }),
+	            _react2.default.createElement("div", { id: "button-four", style: this.state.canClick ? this.hasCursor : this.noCursor, onClick: this.buttonClick.bind(this), className: "button right-col" })
 	          )
 	        ),
 	        _react2.default.createElement(
@@ -21708,12 +21667,12 @@
 	              _react2.default.createElement(
 	                "span",
 	                { className: "display" },
-	                this.props.gameState.length
+	                this.state.stateCount
 	              )
 	            ),
 	            _react2.default.createElement(
 	              "button",
-	              { style: this.props.canClick ? this.noCursor : this.hasCursor, onClick: this.startGame.bind(this) },
+	              { style: this.state.canClick ? this.noCursor : this.hasCursor, onClick: this.startGame.bind(this) },
 	              "Start"
 	            )
 	          )
