@@ -21570,7 +21570,8 @@
 	      hintOn: false,
 	      messageColor: "black",
 	      message: "",
-	      aMessage: false
+	      aMessage: false,
+	      strict: true
 	    };
 
 	    _this.hasCursor = {
@@ -21596,17 +21597,25 @@
 	          this.blinkButton(newUS);
 	          this.setState({ messageColor: "green", message: "You Win!", aMessage: true });
 	          this.blinkMessage();
+	          this.setState({ userState: [], gameState: [], canClick: false, inGame: false, stateCount: 0 });
 	        } else {
 	          this.blinkButton(newUS, "green");
 	          this.setState({ messageColor: "green", message: "Very Good!", aMessage: true });
 	          this.blinkMessage();
-	          this.addGameState();
+	          this.addGameState(newUS);
 	        }
 	      } else {
-	        this.blinkButton(newUS, "red");
-	        this.setState({ messageColor: "red", message: "Oh No!", aMessage: true });
-	        this.blinkMessage();
-	        this.setState({ userState: [], gameState: [], canClick: false, inGame: false, stateCount: 0 });
+	        if (this.state.strict == true) {
+	          this.blinkButton(newUS, "red");
+	          this.setState({ messageColor: "red", message: "Oh No!", aMessage: true });
+	          this.blinkMessage();
+	          this.setState({ userState: [], gameState: [], canClick: false, inGame: false, stateCount: 0 });
+	        } else {
+	          //not strict
+	          this.blinkButton(newUS, "red");
+	          this.setState({ messageColor: "red", message: "Wrong, Try Again!", aMessage: true });
+	          this.blinkHint();
+	        }
 	      }
 	    }
 	    //Blinks Twice
@@ -21618,6 +21627,17 @@
 	        (0, _jquery2.default)(".message").animate({ opacity: 0 }, "fast", function () {
 	          (0, _jquery2.default)(".message").animate({ opacity: 1 }, "fast", function () {
 	            (0, _jquery2.default)(".message").animate({ opacity: 0 }, "fast");
+	          });
+	        });
+	      });
+	    }
+	  }, {
+	    key: 'blinkHint',
+	    value: function blinkHint() {
+	      (0, _jquery2.default)(".hintContainer").animate({ opacity: 1 }, "slow", function () {
+	        (0, _jquery2.default)(".hintContainer").animate({ opacity: .5 }, "slow", function () {
+	          (0, _jquery2.default)(".hintContainer").animate({ opacity: 1 }, "slow", function () {
+	            (0, _jquery2.default)(".hintContainer").animate({ opacity: 0 }, "slow");
 	          });
 	        });
 	      });
@@ -21652,8 +21672,7 @@
 	        us.push(newUS);
 	      }
 	      var sc = this.state.stateCount + 1;
-	      this.setState({ hintOn: true });
-	      this.setState({ hintOn: false });
+	      this.blinkHint();
 	      gs.push(newState);
 	      this.setState({ gameState: gs, stateCount: sc, userState: us, inGame: true, canClick: true });
 	    }
