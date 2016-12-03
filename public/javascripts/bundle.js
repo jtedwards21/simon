@@ -21613,8 +21613,12 @@
 	  }, {
 	    key: 'blinkMessage',
 	    value: function blinkMessage() {
-	      (0, _jquery2.default)(".message").animate({ opacity: .1 }, "fast", function () {
-	        (0, _jquery2.default)(".message").animate({ opacity: 1 }, "fast");
+	      (0, _jquery2.default)(".message").animate({ opacity: 1 }, "fast", function () {
+	        (0, _jquery2.default)(".message").animate({ opacity: 0 }, "fast", function () {
+	          (0, _jquery2.default)(".message").animate({ opacity: 1 }, "fast", function () {
+	            (0, _jquery2.default)(".message").animate({ opacity: 0 }, "fast");
+	          });
+	        });
 	      });
 	    }
 	  }, {

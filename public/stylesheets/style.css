@@ -1,3 +1,17 @@
+@font-face {
+  font-family: Jambo;
+  font-style: normal;
+  font-weight: normal;
+  src: url("Jambo.otf") format("opentype");
+}
+
+@font-face {
+  font-family: Denominator;
+  font-style: normal;
+  font-weight: normal;
+  src: url("Denominator.ttf") format('truetype');
+}
+
 body {
   padding-left: auto;
   padding-right: auto;
@@ -64,9 +78,12 @@ height: 30px;
 
 .message {
   text-align: center;
+  font-family: Denominator;
+  font-weight: bold;
+  font-size: 1.5em;
 }
 
-.horizontalHints{
+.horizontalHints span{
   display: inline-flex;
 }
 
@@ -97,6 +114,7 @@ height: 30px;
   display: block;
   margin: 0 auto;
   float: none;
+  margin-bottom: 20px;
 }
 
 .button {
@@ -148,7 +166,7 @@ height: 30px;
   margin: 0 auto;
   float: none;
   display: block;
-  width: 100px;
+  width: 90px;
 }
 
 .display-container {

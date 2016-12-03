@@ -57,8 +57,12 @@ export default class Simon extends React.Component {
   }
   //Blinks Twice
   blinkMessage(){
-JQuery(".message").animate({opacity: .1}, "fast", function(){
-JQuery(".message").animate({opacity: 1}, "fast")
+JQuery(".message").animate({opacity: 1}, "fast", function(){
+JQuery(".message").animate({opacity: 0}, "fast", function(){ 
+JQuery(".message").animate({opacity: 1}, "fast", function(){
+JQuery(".message").animate({opacity: 0}, "fast")
+})
+})
 })
   }
   blinkButton(id, color){
