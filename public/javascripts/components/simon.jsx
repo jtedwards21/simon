@@ -1,10 +1,6 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import JQuery from 'jquery';
 
-var onChange = function(gameState, userState, canClick) {
-　　ReactDOM.render(<Simon canClick={canClick} gameState={gameState} userState={userState}/>, document.getElementById("content"));
-}
 
 export default class Simon extends React.Component {
   constructor() {
@@ -14,7 +10,10 @@ export default class Simon extends React.Component {
 
     this.state = {
       canClick: true,
-      userState: []
+      userState: [],
+　　　　　　gameState: [],
+      stateCount: 0,
+      inGame: false
     };
 
     this.hasCursor = {
@@ -25,92 +24,54 @@ export default class Simon extends React.Component {
 	cursor: "unset"
     };
   }
-  addColorClick(e) {
-    console.log('color');
-　　　　var targetId = e.target.id;
-    var change = JQuery("#" + targetId);
-    var s = this.props.userState;
-    s.push(e.target.id)
-    var l = s.length;
-    var gameS = this.props.gameState.slice(0,l);
-    var curr = l - 1;
-    var same = s[curr] == gameS[curr];
-    if(same == false){
-	//Blink Red and Dump
-	change.css("background-color", "red");
-	change.animate({
-	opacity: 0
-}, 100);
-	change.animate({
-	opacity: 1
-}, 100);
-	onChange([], [], false);
-    }
-    else{
-      if(l == this.props.gameState.length){
-	var originalColor = change.css("background-color");
-	change.css("background-color", "green");
-	change.animate({
-	opacity: 0
-}, 100);
-	change.animate({
-	opacity: 1
-}, 100);
-	
-	change.css("background-color", originalColor);
-        var ri = this.randomInt();
-	var newState = this.buttons[ri];
-	var gs = this.props.gameState;
-	gs.push(newState);
-	this.lightButtons(gs, this.lightButtons);
-        //Show new gamestate before rerender
-	//This is a big issue, 
-	/*
-	for(var i = 0; i < gs.length;i++){
-	  this.lightButton(gs[i]);
-        }*/
-	//rerender
-	//Then onChange would go into the lb method
-	onChange(gs, this.props.userState, true);
+  buttonClick(e) {
+    var newUS = "#" + e.target.id;
+    var us = this.state.userState;
+    var gs = this.state.gameState;
+    var i = this.state.stateCount
+    if(newUS == gs[i]){
+      if(gs.length == 20){
+      this.blinkButton(newUS)
+      //Show a win message TODO
+      } else {
+      blinkButton(newUS, "green");
+      addGameState();
       }
-      else{
-	//continue current state
-      }
+    } else {
+      blinkButton(newUS, "red");
+      //Show a you lose method TODO
+      this.setState({userState: [], gameState: [], canClick: false, inGame: false, stateCount: 0});
     }
+    
   }
-  //Maybe play with state instead?
-  //render all the gamestates
-  lightButtons(gs, lb) {
-	i = 0;
-	JQuery("#" + gs[i]).animate({
-	opacity: 0
-}, 1000, JQuery("#" + gs[i]).animate({
-	opacity: 1
-}, 1000, function(gs, lb)lb(i+1, gs, lb)));}
+  //Blinks Twice
+  blinkButton(id, color){
+    JQuery(id).animate({opacity: 1}, "slow", function(){
+JQuery(id).animate({opacity: .1}, "slow", function(){
+JQuery(id).animate({opacity: .8}, "slow", function(){
+JQuery(id).css("background-color", color);
+JQuery(id).css("background-color","red");//This should eventually go back to original color
+})
+})
+})
   }
-  startGame(){
+  addGameState(newUS){
+    //Can I change the state here without throwing everything off?
+    this.setState({canClick: false})
     //Get a new GameState
     var b = this.randomInt();
     var newState = this.buttons[b];
-    //Show the gameState
     var m = "#" + newState;
-    var gs = this.props.gameState;
-    var us = this.props.userState
-console.log(m);
-    var originalColor = JQuery(m).css("background-color");
-    JQuery(m).animate({
-	opacity: 0
-}, 1000, function(){
-JQuery(m).animate({
-	opacity: 1
-}, 1000, function(){
+    var gs = this.state.gameState;
+    var us = this.state.userState;
+    if(newUS !== 0){us.push(newUS)}
+    var sc = this.state.stateCount + 1;
+    //Show the color of all gs
     gs.push(newState);
-    onChange(gs, us, true); 
-});
-});
-    
-    //onChange
-    
+    this.setState({gameState: gs, stateCount: sc, userState: us, inGame: true, canClick: true});
+  }
+  startGame(){
+    this.addGameState();
   }
   randomInt() {
     var min = Math.ceil(0);
@@ -122,15 +83,15 @@ JQuery(m).animate({
       <div className="box">
 	<div className="buttons">
           <div className="top-row">
-	    <div id="button-one" style={(this.props.canClick) ? this.hasCursor : this.noCursor} onClick={this.addColorClick.bind(this)} className="button left-col">
+	    <div id="button-one" style={(this.state.canClick) ? this.hasCursor : this.noCursor} onClick={this.buttonClick.bind(this)} className="button left-col">
             </div>
-            <div id="button-two" style={(this.props.canClick) ? this.hasCursor : this.noCursor} onClick={this.addColorClick.bind(this)} className="button right-col">
+            <div id="button-two" style={(this.state.canClick) ? this.hasCursor : this.noCursor} onClick={this.buttonClick.bind(this)} className="button right-col">
             </div>
 	  </div>
           <div className="bottom-row">
-            <div id="button-three" style={(this.props.canClick) ? this.hasCursor : this.noCursor} onClick={this.addColorClick.bind(this)} className="button left-col">
+            <div id="button-three" style={(this.state.canClick) ? this.hasCursor : this.noCursor} onClick={this.buttonClick.bind(this)} className="button left-col">
             </div>
-            <div id="button-four" style={(this.props.canClick) ? this.hasCursor : this.noCursor} onClick={this.addColorClick.bind(this)} className="button right-col">
+            <div id="button-four" style={(this.state.canClick) ? this.hasCursor : this.noCursor} onClick={this.buttonClick.bind(this)} className="button right-col">
             </div>
 	  </div>
 	</div>
