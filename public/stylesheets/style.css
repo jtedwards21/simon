@@ -26,6 +26,8 @@ body {
   text-align: center;
   height: 30px;
   line-height: 30px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .strict-on {
@@ -36,13 +38,6 @@ body {
 
 }
 
-.reset-button {
-  background-color: red;
-  width: 50px;
-  text-align: center;
-  height: 30px;
-  line-height: 30px;
-}
 
 .bground {
   background: url(../img/cork.jpg);
@@ -112,9 +107,9 @@ height: 30px;
 }
 
 .hint{
-  width: 10px;
-  height: 10px;
-　　border-radius: 5px;
+　　border-radius: 50%;
+  width: 20px;
+  height: 20px;
 }
 
 .box {
@@ -127,8 +122,7 @@ height: 30px;
   padding-right: auto;
   padding-bottom: 20px;
   padding-top: 40px;
-  background-color:　#CBCBCB;
-  opacity: .6
+  background-color:　rgba(0,0,0,.4);
 }
 
 .messageContainer {
@@ -167,22 +161,22 @@ height: 30px;
 }
 
 #buttonOne {
-  background-color: blue;
+  background-color: rgba(72,118,255,.7);
   border-top-left-radius: 96px;
 }
 
 #buttonTwo {
-  background-color: red;
+  background-color: rgba(255,64,64,.7);
   border-top-right-radius: 96px;
 }
 
 #buttonThree {
-  background-color: green;
+  background-color: rgba(0,238,118,.7);
   border-bottom-left-radius: 96px;
 }
 
 #buttonFour {
-  background-color: yellow;
+  background-color: rgba(255,255,0,.7);
   border-bottom-right-radius: 96px;
 }
 
@@ -209,6 +203,7 @@ height: 30px;
   height: 30px;
   margin-right: 10px;
   text-align: center;
+  border-radius: 5px;
 }
 
 .controls {

@@ -141,8 +141,14 @@ JQuery(id).animate({opacity: .7}, "fast", function(){
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
   toggleStrict(){
-    if(this.state.strict == true){this.setState({strict: false})} else {
+    if(this.state.strict == true){
+	this.setState({strict: false});
+        this.setState({messageColor: "green", message: "Strict Off", aMessage: true})
+        this.blinkMessage();
+    } else {
       this.setState({strict: true});
+      this.setState({messageColor: "green", message: "Strict On", aMessage: true})
+      this.blinkMessage();
     }
   }
   resetGame(){
@@ -197,7 +203,7 @@ JQuery(id).animate({opacity: .7}, "fast", function(){
 	</div>
 	<div className="controls-container">
 	  <div className="controls">
-            <button style={(this.state.canClick) ? this.noCursor : this.hasCursor}　onClick={this.handleButtonPress.bind(this)}>{buttonText}</button>
+            <button style={this.hasCursor}　onClick={this.handleButtonPress.bind(this)}>{buttonText}</button>
             <div className="bottom-controls">
 	      <div className="display-container">
 	        <span className="display">{this.state.stateCount}</span>
@@ -216,12 +222,7 @@ JQuery(id).animate({opacity: .7}, "fast", function(){
 	</div>
 	<div className="hintContainer">
 	  <div className="horizontalHints">
-	    <ReactCSSTransitionGroup
-              transitionName="hint"
-              transitionEnterTimeout={500}
-              transitionLeaveTimeout={300}>
                 {hints}
-            </ReactCSSTransitionGroup>
 
 	  </div>
 	</div>

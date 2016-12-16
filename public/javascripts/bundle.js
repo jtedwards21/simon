@@ -21721,8 +21721,12 @@
 	    value: function toggleStrict() {
 	      if (this.state.strict == true) {
 	        this.setState({ strict: false });
+	        this.setState({ messageColor: "green", message: "Strict Off", aMessage: true });
+	        this.blinkMessage();
 	      } else {
 	        this.setState({ strict: true });
+	        this.setState({ messageColor: "green", message: "Strict On", aMessage: true });
+	        this.blinkMessage();
 	      }
 	    }
 	  }, {
@@ -21790,7 +21794,7 @@
 	            { className: 'controls' },
 	            _react2.default.createElement(
 	              'button',
-	              { style: this.state.canClick ? this.noCursor : this.hasCursor, onClick: this.handleButtonPress.bind(this) },
+	              { style: this.hasCursor, onClick: this.handleButtonPress.bind(this) },
 	              buttonText
 	            ),
 	            _react2.default.createElement(
@@ -21831,14 +21835,7 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'horizontalHints' },
-	            _react2.default.createElement(
-	              _reactAddonsCssTransitionGroup2.default,
-	              {
-	                transitionName: 'hint',
-	                transitionEnterTimeout: 500,
-	                transitionLeaveTimeout: 300 },
-	              hints
-	            )
+	            hints
 	          )
 	        )
 	      );
@@ -23558,7 +23555,7 @@
 	  _createClass(Hint, [{
 	    key: "render",
 	    value: function render() {
-	      var s = { backgroundColor: this.props.color };
+	      var s = { backgroundColor: this.props.color, borderRadius: "50%" };
 	      return _react2.default.createElement("div", { className: "hint", style: s });
 	    }
 	  }]);
