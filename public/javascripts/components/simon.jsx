@@ -132,7 +132,7 @@ JQuery(id).animate({opacity: .7}, "fast", function(){
     gs.push(newState);
     this.setState({gameState: gs, stateCount: 0, userState: [], inGame: true, canClick: true});
   }
-  startGame(){
+  handleButtonPress(){
     this.addGameState();
   }
   randomInt() {
@@ -140,7 +140,25 @@ JQuery(id).animate({opacity: .7}, "fast", function(){
     var max = Math.floor(3);
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
+  toggleStrict(){
+    if(this.state.strict == true){this.setState({strict: false})} else {
+      this.setState({strict: true});
+    }
+  }
+  resetGame(){
+    this.setState({
+      canClick: true,
+      userState: [],
+　　　　　　gameState: [],
+      stateCount: 0,
+      inGame: false,
+      hintOn: false,
+      messageColor: "black",
+      message: "",
+      aMessage: false})
+  }
   render() {
+    var buttonText = "Start"
     var on = this.state.hintOn;
     var hints = this.state.gameState.map(function(d, i){
         var button = d.substring(1)
@@ -179,10 +197,13 @@ JQuery(id).animate({opacity: .7}, "fast", function(){
 	</div>
 	<div className="controls-container">
 	  <div className="controls">
-	    <div className="display-container">
-	      <span className="display">{this.state.stateCount}</span>
+            <button style={(this.state.canClick) ? this.noCursor : this.hasCursor}　onClick={this.handleButtonPress.bind(this)}>{buttonText}</button>
+            <div className="bottom-controls">
+	      <div className="display-container">
+	        <span className="display">{this.state.stateCount}</span>
+	      </div>
+	      <div className="strict-button" onClick={this.toggleStrict.bind(this)}>Strict</div>
 	    </div>
-            <button style={(this.state.canClick) ? this.noCursor : this.hasCursor}　onClick={this.startGame.bind(this)}>Start</button>
 	  </div>
 	</div>
 	<div className="messageContainer">

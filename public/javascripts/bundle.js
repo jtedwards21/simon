@@ -21705,8 +21705,8 @@
 	      this.setState({ gameState: gs, stateCount: 0, userState: [], inGame: true, canClick: true });
 	    }
 	  }, {
-	    key: 'startGame',
-	    value: function startGame() {
+	    key: 'handleButtonPress',
+	    value: function handleButtonPress() {
 	      this.addGameState();
 	    }
 	  }, {
@@ -21717,8 +21717,32 @@
 	      return Math.floor(Math.random() * (max - min + 1)) + min;
 	    }
 	  }, {
+	    key: 'toggleStrict',
+	    value: function toggleStrict() {
+	      if (this.state.strict == true) {
+	        this.setState({ strict: false });
+	      } else {
+	        this.setState({ strict: true });
+	      }
+	    }
+	  }, {
+	    key: 'resetGame',
+	    value: function resetGame() {
+	      this.setState({
+	        canClick: true,
+	        userState: [],
+	        gameState: [],
+	        stateCount: 0,
+	        inGame: false,
+	        hintOn: false,
+	        messageColor: "black",
+	        message: "",
+	        aMessage: false });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var buttonText = "Start";
 	      var on = this.state.hintOn;
 	      var hints = this.state.gameState.map(function (d, i) {
 	        var button = d.substring(1);
@@ -21765,18 +21789,27 @@
 	            'div',
 	            { className: 'controls' },
 	            _react2.default.createElement(
-	              'div',
-	              { className: 'display-container' },
-	              _react2.default.createElement(
-	                'span',
-	                { className: 'display' },
-	                this.state.stateCount
-	              )
+	              'button',
+	              { style: this.state.canClick ? this.noCursor : this.hasCursor, onClick: this.handleButtonPress.bind(this) },
+	              buttonText
 	            ),
 	            _react2.default.createElement(
-	              'button',
-	              { style: this.state.canClick ? this.noCursor : this.hasCursor, onClick: this.startGame.bind(this) },
-	              'Start'
+	              'div',
+	              { className: 'bottom-controls' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'display-container' },
+	                _react2.default.createElement(
+	                  'span',
+	                  { className: 'display' },
+	                  this.state.stateCount
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'strict-button', onClick: this.toggleStrict.bind(this) },
+	                'Strict'
+	              )
 	            )
 	          )
 	        ),
