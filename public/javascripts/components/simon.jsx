@@ -79,7 +79,8 @@ export default class Simon extends React.Component {
         case "lightFail":
 	//not strict
 	  this.blinkButton(newUS, "red");
-          this.setState({messageColor: "red", message: "Wrong, Try Again!", aMessage: true})
+	  this.setState({messageColor: "green", message: "Try Again", aMessage: true})
+          this.blinkMessage();
 	  this.blinkHint();
 	  break;
     }
