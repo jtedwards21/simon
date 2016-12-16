@@ -20,7 +20,8 @@ export default class Simon extends React.Component {
       messageColor: "black",
       message: "",
       aMessage: false,
-      strict: true
+      strict: true,
+      nOfClicks: 0
     };
 
     this.hasCursor = {
@@ -74,7 +75,7 @@ export default class Simon extends React.Component {
           this.blinkButton(newUS, "red");
           this.setState({messageColor: "red", message: "Oh No!", aMessage: true})
           this.blinkMessage();
-          this.setState({userState: [], gameState: [], canClick: false, inGame: false, stateCount: 0});
+          this.setState({userState: [], gameState: [], nOfClicks: 0,canClick: false, inGame: false, stateCount: 0});
           break; 
         case "lightFail":
 	//not strict
@@ -130,8 +131,9 @@ JQuery(id).animate({opacity: .7}, "fast", function(){
     var gs = this.state.gameState;
     var us = this.state.userState;
     this.blinkHint();
+    var nOfClicks = this.state.nOfClicks;
     gs.push(newState);
-    this.setState({gameState: gs, stateCount: 0, userState: [], inGame: true, canClick: true});
+    this.setState({gameState: gs, stateCount: 0, nOfClicks: nOfClicks + 1,userState: [], inGame: true, canClick: true});
   }
   handleButtonPress(){
     this.addGameState();
@@ -162,6 +164,7 @@ JQuery(id).animate({opacity: .7}, "fast", function(){
       hintOn: false,
       messageColor: "black",
       message: "",
+      nOfClicks: 0,
       aMessage: false})
   }
   render() {
@@ -207,7 +210,7 @@ JQuery(id).animate({opacity: .7}, "fast", function(){
             <button style={this.hasCursor}　onClick={this.handleButtonPress.bind(this)}>{buttonText}</button>
             <div className="bottom-controls">
 	      <div className="display-container">
-	        <span className="display">{this.state.stateCount}</span>
+	        <span className="display">{this.state.nOfClicks}</span>
 	      </div>
 	      <div className="strict-button" onClick={this.toggleStrict.bind(this)}>Strict</div>
 	    </div>

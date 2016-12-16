@@ -21571,7 +21571,8 @@
 	      messageColor: "black",
 	      message: "",
 	      aMessage: false,
-	      strict: true
+	      strict: true,
+	      nOfClicks: 0
 	    };
 
 	    _this.hasCursor = {
@@ -21640,7 +21641,7 @@
 	          this.blinkButton(newUS, "red");
 	          this.setState({ messageColor: "red", message: "Oh No!", aMessage: true });
 	          this.blinkMessage();
-	          this.setState({ userState: [], gameState: [], canClick: false, inGame: false, stateCount: 0 });
+	          this.setState({ userState: [], gameState: [], nOfClicks: 0, canClick: false, inGame: false, stateCount: 0 });
 	          break;
 	        case "lightFail":
 	          //not strict
@@ -21702,8 +21703,9 @@
 	      var gs = this.state.gameState;
 	      var us = this.state.userState;
 	      this.blinkHint();
+	      var nOfClicks = this.state.nOfClicks;
 	      gs.push(newState);
-	      this.setState({ gameState: gs, stateCount: 0, userState: [], inGame: true, canClick: true });
+	      this.setState({ gameState: gs, stateCount: 0, nOfClicks: nOfClicks + 1, userState: [], inGame: true, canClick: true });
 	    }
 	  }, {
 	    key: 'handleButtonPress',
@@ -21742,6 +21744,7 @@
 	        hintOn: false,
 	        messageColor: "black",
 	        message: "",
+	        nOfClicks: 0,
 	        aMessage: false });
 	    }
 	  }, {
@@ -21807,7 +21810,7 @@
 	                _react2.default.createElement(
 	                  'span',
 	                  { className: 'display' },
-	                  this.state.stateCount
+	                  this.state.nOfClicks
 	                )
 	              ),
 	              _react2.default.createElement(
