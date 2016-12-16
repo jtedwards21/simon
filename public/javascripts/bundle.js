@@ -21583,6 +21583,8 @@
 	    };
 	    return _this;
 	  }
+	  //This is missing a set of if statements
+
 
 	  _createClass(Simon, [{
 	    key: 'buttonClick',
@@ -21591,31 +21593,61 @@
 	      var newUS = "#" + e.target.id;
 	      var us = this.state.userState;
 	      var gs = this.state.gameState;
-	      var i = this.state.stateCount - 1;
+	      var i = this.state.stateCount;
+	      var correct;
+	      var action;
+
 	      if (e.target.id == gs[i]) {
-	        if (gs.length == 20) {
+	        correct = true;
+	      } else {
+	        correct = false;
+	      }
+
+	      if (gs.length == 20 && correct == true) {
+	        action = "win";
+	      } else if (correct == true && i + 1 == gs.length) {
+	        action = "newState";
+	      } else if (correct == true && us.length !== gs.length) {
+	        action = "wait";
+	      } else if (this.state.strict == true && correct == false) {
+	        action = "strictFail";
+	      } else if (this.state.strict == false && correct == false) {
+	        action = "lightFail";
+	      }
+	      switch (action) {
+	        case "win":
+	          console.log('win');
 	          this.blinkButton(newUS);
 	          this.setState({ messageColor: "green", message: "You Win!", aMessage: true });
 	          this.blinkMessage();
 	          this.setState({ userState: [], gameState: [], canClick: false, inGame: false, stateCount: 0 });
-	        } else {
+	          break;
+	        case "newState":
+	          //Have reached GameState Length
+	          console.log('newState');
 	          this.blinkButton(newUS, "green");
 	          this.setState({ messageColor: "green", message: "Very Good!", aMessage: true });
 	          this.blinkMessage();
 	          this.addGameState(newUS);
-	        }
-	      } else {
-	        if (this.state.strict == true) {
+	          break;
+	        case "wait":
+	          console.log('wait');
+	          var sc = this.state.stateCount + 1;
+	          us.push(newUS);
+	          this.setState({ stateCount: sc, userState: us });
+	          break;
+	        case "strictFail":
 	          this.blinkButton(newUS, "red");
 	          this.setState({ messageColor: "red", message: "Oh No!", aMessage: true });
 	          this.blinkMessage();
 	          this.setState({ userState: [], gameState: [], canClick: false, inGame: false, stateCount: 0 });
-	        } else {
+	          break;
+	        case "lightFail":
 	          //not strict
 	          this.blinkButton(newUS, "red");
 	          this.setState({ messageColor: "red", message: "Wrong, Try Again!", aMessage: true });
 	          this.blinkHint();
-	        }
+	          break;
 	      }
 	    }
 	    //Blinks Twice
@@ -21668,13 +21700,9 @@
 	      var m = "#" + newState;
 	      var gs = this.state.gameState;
 	      var us = this.state.userState;
-	      if (newUS !== 0) {
-	        us.push(newUS);
-	      }
-	      var sc = this.state.stateCount + 1;
 	      this.blinkHint();
 	      gs.push(newState);
-	      this.setState({ gameState: gs, stateCount: sc, userState: us, inGame: true, canClick: true });
+	      this.setState({ gameState: gs, stateCount: 0, userState: [], inGame: true, canClick: true });
 	    }
 	  }, {
 	    key: 'startGame',
