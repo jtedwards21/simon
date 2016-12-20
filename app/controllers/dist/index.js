@@ -235,6 +235,7 @@ $(id).animate({opacity: .7}, "fast", function(){
 	<div className="messageContainer">
           {messages}
 	</div>
+　　　　　　　　
       </div>
     )
   }
