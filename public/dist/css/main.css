@@ -12,6 +12,21 @@
   src: url("Denominator.ttf") format('truetype');
 }
 
+
+a {
+  color: black;
+}
+
+#github-img {
+  width: 50px;
+  color: black;
+}
+
+#github-container p {
+  font-family: Denominator;
+  font-size: 1.5em;
+}
+
 body {
   padding-left: auto;
   padding-right: auto;
