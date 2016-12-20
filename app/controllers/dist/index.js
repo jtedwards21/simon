@@ -13,18 +13,6 @@ var Message = React.createClass({
   }
 });
 
-var Hint = React.createClass({
-  getInitialState(){
-	return {};
-  },
-  render() {
-    var s = {backgroundColor: this.props.color, borderRadius: "50%"}
-    return(
-      <div className="hint" style={s}>
-      </div>
-    )
-  }
-});
 var Simon = React.createClass({
   getInitialState() {
     return {
@@ -42,7 +30,6 @@ var Simon = React.createClass({
     };
   },
   buttonClick(e) {
-    console.log('dog');
     var newUS = "#" + e.target.id;
     var us = this.state.userState;
     var gs = this.state.gameState;
@@ -59,7 +46,6 @@ var Simon = React.createClass({
     else if(this.state.strict == false && correct == false){action = "lightFail"}
     switch(action){
       case "win":
-        console.log('win');
         this.blinkButton(newUS)
         this.setState({messageColor: "green", message: "You Win!", aMessage: true})
         this.blinkMessage();
@@ -67,14 +53,13 @@ var Simon = React.createClass({
         break;
       case "newState":
         //Have reached GameState Length
-        console.log('newState')
         this.blinkButton(newUS, "green");
 　　　　　　  this.setState({messageColor: "green", message: "Very Good!", aMessage: true})
         this.blinkMessage();
-        this.addGameState(newUS);
+        var that = this;
+        setTimeout(function(){that.addGameState(newUS);}, 2000);
         break;
        case "wait":
-         console.log('wait')
          this.blinkButton(newUS, "green");
          var sc = this.state.stateCount + 1;
          us.push(newUS);
@@ -91,7 +76,12 @@ var Simon = React.createClass({
 	  this.blinkButton(newUS, "red");
 	  this.setState({messageColor: "green", message: "Try Again", aMessage: true})
           this.blinkMessage();
-	  this.blinkHint();
+	  var gs = this.state.gameState;
+          var blinkGameState = gs.map(function(g){
+	    return "#" + g;
+          });
+	  var that = this;
+          setTimeout(function(){that.clickCallback(blinkGameState, 0);}, 2000);
 	  break;
     }
     
@@ -105,17 +95,7 @@ $(".message").animate({opacity: 0}, "fast")
 })
 })
   },
-  blinkHint(){
-$(".hintContainer").animate({opacity: 1}, "slow", function(){
-$(".hintContainer").animate({opacity: .5}, "slow", function(){ 
-$(".hintContainer").animate({opacity: 1}, "slow", function(){
-$(".hintContainer").animate({opacity: 0}, "slow")
-})
-})
-})
-  },
   blinkButton(id, color){
-    console.log(id);
     var button = id.substring(1);
     var sounds = { buttonOne : "https://s3.amazonaws.com/freecodecamp/simonSound1.mp3",
       buttonTwo : "https://s3.amazonaws.com/freecodecamp/simonSound2.mp3",
@@ -127,35 +107,31 @@ $(".hintContainer").animate({opacity: 0}, "slow")
     $(id).animate({opacity: 1}, "fast", function(){
 $(id).animate({opacity: .1}, "fast", function(){
 $(id).animate({opacity: .7}, "fast", function(){
-$(id).animate({opacity: 1}, "fast", function(){
-$(id).animate({opacity: .1}, "fast", function(){
-$(id).animate({opacity: .7}, "fast", function(){
 
-})
-})
-})
 })
 })
 })
   },
   addGameState(newUS){
     //Can I change the state here without throwing everything off?
-    this.setState({canClick: false})
+    this.setState({canClick: false, inGame: true});
+    console.log(this.state);
     //Get a new GameState
     var b = this.randomInt();
     var newState = this.buttons[b];
     var m = "#" + newState;
     var gs = this.state.gameState;
+    gs.push(newState);
     var us = this.state.userState;
     var blinkGameState = gs.map(function(g){
 	return "#" + g;
     });
     this.clickCallback(blinkGameState, 0);
     var nOfClicks = this.state.nOfClicks;
-    gs.push(newState);
     this.setState({gameState: gs, stateCount: 0, nOfClicks: nOfClicks + 1,userState: [], inGame: true, canClick: true});
   },
-  handleButtonPress(){
+  startGame(){
+    var a = 0;
     this.addGameState();
   },
   randomInt() {
@@ -176,14 +152,13 @@ $(id).animate({opacity: .7}, "fast", function(){
   },
   clickCallback(gs, n){
     var callback;
-    console.log(gs[n])
-    if(gs.length - 1 > n){
+    if(gs.length  > n){
 	callback = this.clickCallback;
     } else {
 	callback = function(){};
     }
-    $(gs[n]).animate({opacity: 0}, "slow", function(){
-	$(gs[n]).animate({opacity: 1}, "slow");
+    $(gs[n]).animate({opacity: 0}, "fast", function(){
+	$(gs[n]).animate({opacity: 1}, "fast");
 	callback(gs, n+1);
 	})
     
@@ -206,24 +181,22 @@ $(id).animate({opacity: .7}, "fast", function(){
     this.hasCursor = {
 	cursor: "pointer"
     };
-   
+    var buttonPress;
+    var buttonText;
+    switch(this.state.inGame){
+	case false:
+	  buttonPress = this.startGame;
+	  buttonText= "Start"
+	  break;
+	case true:
+	  buttonPress = this.resetGame;
+	  buttonText = "Reset"
+    }
+
     this.noCursor = {
 	cursor: "unset"
     };
-    var buttonText = "Start"
     var on = this.state.hintOn;
-    var hints = this.state.gameState.map(function(d, i){
-        var button = d.substring(1)
-	var k = {
-	  buttonOne: "blue",
-	  buttonTwo: "red",
-	  buttonThree: "green",
-	  buttonFour: "yellow"
-}
-        var desc = Object.getOwnPropertyDescriptor(k, d);
-	var color = desc.value;
-	return <Hint key={i} color={color} show={on}/>
-})
     var messages;
     if(this.state.aMessage == true){
 	messages = <Message message={this.state.message} color={this.state.messageColor} />
@@ -236,37 +209,31 @@ $(id).animate({opacity: .7}, "fast", function(){
       <div className="box">
 	<div className="buttons">
           <div style={topRowStyle} id="top-row">
-	    <div id="buttonOne" style={(this.state.canClick) ? this.hasCursor : this.noCursor} onClick={this.buttonClick.bind(this)} className="button left-col">
+	    <div id="buttonOne" style={(this.state.canClick) ? this.hasCursor : this.noCursor} onClick={this.buttonClick} className="button left-col">
             </div>
-            <div id="buttonTwo" style={(this.state.canClick) ? this.hasCursor : this.noCursor} onClick={this.buttonClick.bind(this)} className="button right-col">
+            <div id="buttonTwo" style={(this.state.canClick) ? this.hasCursor : this.noCursor} onClick={this.buttonClick} className="button right-col">
             </div>
 	  </div>
           <div id="bottom-row">
-            <div id="buttonThree" style={(this.state.canClick) ? this.hasCursor : this.noCursor} onClick={this.buttonClick.bind(this)} className="button left-col">
+            <div id="buttonThree" style={(this.state.canClick) ? this.hasCursor : this.noCursor} onClick={this.buttonClick} className="button left-col">
             </div>
-            <div id="buttonFour" style={(this.state.canClick) ? this.hasCursor : this.noCursor} onClick={this.buttonClick.bind(this)} className="button right-col">
+            <div id="buttonFour" style={(this.state.canClick) ? this.hasCursor : this.noCursor} onClick={this.buttonClick} className="button right-col">
             </div>
 	  </div>
 	</div>
 	<div className="controls-container">
 	  <div className="controls">
-            <button style={this.hasCursor}　onClick={this.handleButtonPress.bind(this)}>{buttonText}</button>
+            <button style={this.hasCursor}　onClick={buttonPress}>{buttonText}</button>
             <div className="bottom-controls">
 	      <div className="display-container">
 	        <span className="display">{this.state.nOfClicks}</span>
 	      </div>
-	      <div className="strict-button" onClick={this.toggleStrict.bind(this)}>Strict</div>
+	      <div className="strict-button" onClick={this.toggleStrict}>Strict</div>
 	    </div>
 	  </div>
 	</div>
 	<div className="messageContainer">
           {messages}
-	</div>
-	<div className="hintContainer">
-	  <div className="horizontalHints">
-                {hints}
-
-	  </div>
 	</div>
       </div>
     )
