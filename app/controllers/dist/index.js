@@ -1,16 +1,33 @@
-import React from "react";
-import JQuery from 'jquery';
-import Hint from './hint';
-import Message from './message';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-export default class Simon extends React.Component {
-  constructor() {
-    super();
+var Message = React.createClass({
+  getInitialState() {
+    return {};
+  },
+  render() {
+    var s = {color: this.props.messageColor}
+    return(
+      <div className="message" style={s}>
+	{this.props.message}
+      </div>
+    )
+  }
+});
 
-    this.buttons = ["buttonOne", "buttonTwo", "buttonThree", "buttonFour"];
-
-    this.state = {
+var Hint = React.createClass({
+  getInitialState(){
+	return {};
+  },
+  render() {
+    var s = {backgroundColor: this.props.color, borderRadius: "50%"}
+    return(
+      <div className="hint" style={s}>
+      </div>
+    )
+  }
+});
+var Simon = React.createClass({
+  getInitialState() {
+    return {
       canClick: true,
       userState: [],
 　　　　　　gameState: [],
@@ -23,16 +40,7 @@ export default class Simon extends React.Component {
       strict: true,
       nOfClicks: 0
     };
-
-    this.hasCursor = {
-	cursor: "pointer"
-    };
-   
-    this.noCursor = {
-	cursor: "unset"
-    };
-  }
-  //This is missing a set of if statements
+  },
   buttonClick(e) {
     console.log('dog');
     var newUS = "#" + e.target.id;
@@ -86,33 +94,32 @@ export default class Simon extends React.Component {
 	  break;
     }
     
-  }
-  //Blinks Twice
+  },
   blinkMessage(){
-JQuery(".message").animate({opacity: 1}, "fast", function(){
-JQuery(".message").animate({opacity: 0}, "fast", function(){ 
-JQuery(".message").animate({opacity: 1}, "fast", function(){
-JQuery(".message").animate({opacity: 0}, "fast")
+$(".message").animate({opacity: 1}, "fast", function(){
+$(".message").animate({opacity: 0}, "fast", function(){ 
+$(".message").animate({opacity: 1}, "fast", function(){
+$(".message").animate({opacity: 0}, "fast")
 })
 })
 })
-  }
+  },
   blinkHint(){
-JQuery(".hintContainer").animate({opacity: 1}, "slow", function(){
-JQuery(".hintContainer").animate({opacity: .5}, "slow", function(){ 
-JQuery(".hintContainer").animate({opacity: 1}, "slow", function(){
-JQuery(".hintContainer").animate({opacity: 0}, "slow")
+$(".hintContainer").animate({opacity: 1}, "slow", function(){
+$(".hintContainer").animate({opacity: .5}, "slow", function(){ 
+$(".hintContainer").animate({opacity: 1}, "slow", function(){
+$(".hintContainer").animate({opacity: 0}, "slow")
 })
 })
 })
-  }
+  },
   blinkButton(id, color){
-    JQuery(id).animate({opacity: 1}, "fast", function(){
-JQuery(id).animate({opacity: .1}, "fast", function(){
-JQuery(id).animate({opacity: .7}, "fast", function(){
-JQuery(id).animate({opacity: 1}, "fast", function(){
-JQuery(id).animate({opacity: .1}, "fast", function(){
-JQuery(id).animate({opacity: .7}, "fast", function(){
+    $(id).animate({opacity: 1}, "fast", function(){
+$(id).animate({opacity: .1}, "fast", function(){
+$(id).animate({opacity: .7}, "fast", function(){
+$(id).animate({opacity: 1}, "fast", function(){
+$(id).animate({opacity: .1}, "fast", function(){
+$(id).animate({opacity: .7}, "fast", function(){
 
 })
 })
@@ -120,7 +127,7 @@ JQuery(id).animate({opacity: .7}, "fast", function(){
 })
 })
 })
-  }
+  },
   addGameState(newUS){
     //Can I change the state here without throwing everything off?
     this.setState({canClick: false})
@@ -134,15 +141,15 @@ JQuery(id).animate({opacity: .7}, "fast", function(){
     var nOfClicks = this.state.nOfClicks;
     gs.push(newState);
     this.setState({gameState: gs, stateCount: 0, nOfClicks: nOfClicks + 1,userState: [], inGame: true, canClick: true});
-  }
+  },
   handleButtonPress(){
     this.addGameState();
-  }
+  },
   randomInt() {
     var min = Math.ceil(0);
     var max = Math.floor(3);
     return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
+  },
   toggleStrict(){
     if(this.state.strict == true){
 	this.setState({strict: false});
@@ -153,7 +160,7 @@ JQuery(id).animate({opacity: .7}, "fast", function(){
       this.setState({messageColor: "green", message: "Strict On", aMessage: true})
       this.blinkMessage();
     }
-  }
+  },
   resetGame(){
     this.setState({
       canClick: true,
@@ -166,8 +173,16 @@ JQuery(id).animate({opacity: .7}, "fast", function(){
       message: "",
       nOfClicks: 0,
       aMessage: false})
-  }
+  },
   render() {
+    this.buttons = ["buttonOne", "buttonTwo", "buttonThree", "buttonFour"];
+    this.hasCursor = {
+	cursor: "pointer"
+    };
+   
+    this.noCursor = {
+	cursor: "unset"
+    };
     var buttonText = "Start"
     var on = this.state.hintOn;
     var hints = this.state.gameState.map(function(d, i){
@@ -188,17 +203,18 @@ JQuery(id).animate({opacity: .7}, "fast", function(){
     } else {
 	messages = [];
     }
+    var topRowStyle = {display: "flex"};
     
     return(
       <div className="box">
 	<div className="buttons">
-          <div className="top-row">
+          <div style={topRowStyle} id="top-row">
 	    <div id="buttonOne" style={(this.state.canClick) ? this.hasCursor : this.noCursor} onClick={this.buttonClick.bind(this)} className="button left-col">
             </div>
             <div id="buttonTwo" style={(this.state.canClick) ? this.hasCursor : this.noCursor} onClick={this.buttonClick.bind(this)} className="button right-col">
             </div>
 	  </div>
-          <div className="bottom-row">
+          <div id="bottom-row">
             <div id="buttonThree" style={(this.state.canClick) ? this.hasCursor : this.noCursor} onClick={this.buttonClick.bind(this)} className="button left-col">
             </div>
             <div id="buttonFour" style={(this.state.canClick) ? this.hasCursor : this.noCursor} onClick={this.buttonClick.bind(this)} className="button right-col">
@@ -217,12 +233,7 @@ JQuery(id).animate({opacity: .7}, "fast", function(){
 	  </div>
 	</div>
 	<div className="messageContainer">
-	  <ReactCSSTransitionGroup
-              transitionName="message"
-              transitionEnterTimeout={500}
-              transitionLeaveTimeout={300}>
-                {messages}
-            </ReactCSSTransitionGroup>
+          {messages}
 	</div>
 	<div className="hintContainer">
 	  <div className="horizontalHints">
@@ -233,4 +244,12 @@ JQuery(id).animate({opacity: .7}, "fast", function(){
       </div>
     )
   }
-}
+});
+	
+
+
+
+ReactDOM.render(
+  <Simon  />,
+  document.getElementById('content')
+)

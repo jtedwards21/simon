@@ -1,0 +1,93 @@
+@font-face {
+  font-family: Jambo;
+  font-style: normal;
+  font-weight: normal;
+  src: url("Jambo.otf") format("opentype");
+}
+
+@font-face {
+  font-family: Denominator;
+  font-style: normal;
+  font-weight: normal;
+  src: url("Denominator.ttf") format('truetype');
+}
+
+.example-enter {
+  opacity: 0.01;
+}
+
+.example-enter.example-enter-active {
+  opacity: 1;
+  transition: opacity 300ms ease-in;
+}
+
+.example-leave {
+  opacity: 1;
+}
+
+.example-leave.example-leave-active {
+  opacity: 0.01;
+  transition: opacity 1ms ease-in;
+}
+
+
+body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: #7F5426
+}
+
+a {
+  color: #00B7FF;
+}
+
+.title {
+  font-family: Jambo;
+  font-size: 1.4em;
+  font-weight: 500;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 0px;
+  color: black;
+}
+
+.sub-title {
+  font-family: Jambo;
+  font-size: 1.4em;
+  font-weight: 500;
+  text-align: center;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  color: black;
+  margin-bottom: 10px;
+}
+
+.adjuster {
+　 display: none;
+}
+
+
+.time-container {
+  display: inline-flex;
+  margin-right: 20px;
+}
+
+.time-container:last-child {
+  margin-right: 0px;
+}
+
+#countdown-clock {
+  width: 460px;
+  float: none;
+  margin: 0 auto;
+  padding-bottom: 10px;
+}
+
+.setting-group {
+  display: flex;
+}
+
+.box {
+  background-color: #FF8200;
+  border-radius: 16px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.32), 0 3px 12px 0 rgba(0, 0, 0, 0.24);
+}
