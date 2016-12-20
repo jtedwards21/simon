@@ -75,6 +75,7 @@ var Simon = React.createClass({
         break;
        case "wait":
          console.log('wait')
+         this.blinkButton(newUS, "green");
          var sc = this.state.stateCount + 1;
          us.push(newUS);
          this.setState({stateCount:sc, userState:us});
@@ -114,6 +115,15 @@ $(".hintContainer").animate({opacity: 0}, "slow")
 })
   },
   blinkButton(id, color){
+    console.log(id);
+    var button = id.substring(1);
+    var sounds = { buttonOne : "https://s3.amazonaws.com/freecodecamp/simonSound1.mp3",
+      buttonTwo : "https://s3.amazonaws.com/freecodecamp/simonSound2.mp3",
+      buttonThree: "https://s3.amazonaws.com/freecodecamp/simonSound3.mp3",
+      buttonFour: "https://s3.amazonaws.com/freecodecamp/simonSound4.mp3"};
+    var sound = sounds[button];
+    var audio = new Audio(sound);
+    audio.play();
     $(id).animate({opacity: 1}, "fast", function(){
 $(id).animate({opacity: .1}, "fast", function(){
 $(id).animate({opacity: .7}, "fast", function(){
@@ -138,6 +148,7 @@ $(id).animate({opacity: .7}, "fast", function(){
     var gs = this.state.gameState;
     var us = this.state.userState;
     this.blinkHint();
+    
     var nOfClicks = this.state.nOfClicks;
     gs.push(newState);
     this.setState({gameState: gs, stateCount: 0, nOfClicks: nOfClicks + 1,userState: [], inGame: true, canClick: true});
