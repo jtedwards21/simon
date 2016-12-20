@@ -22,6 +22,10 @@ a {
   color: black;
 }
 
+#github-container {
+  color: black;
+}
+
 #github-container p {
   font-family: Denominator;
   font-size: 1.5em;
