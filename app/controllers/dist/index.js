@@ -147,8 +147,10 @@ $(id).animate({opacity: .7}, "fast", function(){
     var m = "#" + newState;
     var gs = this.state.gameState;
     var us = this.state.userState;
-    this.blinkHint();
-    
+    var blinkGameState = gs.map(function(g){
+	return "#" + g;
+    });
+    this.clickCallback(blinkGameState, 0);
     var nOfClicks = this.state.nOfClicks;
     gs.push(newState);
     this.setState({gameState: gs, stateCount: 0, nOfClicks: nOfClicks + 1,userState: [], inGame: true, canClick: true});
@@ -171,6 +173,20 @@ $(id).animate({opacity: .7}, "fast", function(){
       this.setState({messageColor: "green", message: "Strict On", aMessage: true})
       this.blinkMessage();
     }
+  },
+  clickCallback(gs, n){
+    var callback;
+    console.log(gs[n])
+    if(gs.length - 1 > n){
+	callback = this.clickCallback;
+    } else {
+	callback = function(){};
+    }
+    $(gs[n]).animate({opacity: 0}, "slow", function(){
+	$(gs[n]).animate({opacity: 1}, "slow");
+	callback(gs, n+1);
+	})
+    
   },
   resetGame(){
     this.setState({
