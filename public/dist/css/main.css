@@ -13,34 +13,32 @@
 }
 
 
-a {
-  color: black;
+#link-container {
+
+  position: fixed;
+  top: 95vh;
 }
 
-#github-img {
+#github-img{
   width: 50px;
-  color: black;
-　　display: block;
-  float: none;
-  margin-left: auto;
-  margin-right: auto;
+}
+
+a {
+  color: #52486F;
 }
 
 #github-container {
-  color: black;
-  position: absolute;
-  top: 85vh;
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  left: 40vw;
+  width: 300px;
+  text-align: center;
 }
 
 #github-container p {
   font-family: Denominator;
-  font-size: 2em;
-  line-height: 60px;
+  font-size: 1.5em;
+  color: black;
 }
+
+
 
 body {
   padding-left: auto;
